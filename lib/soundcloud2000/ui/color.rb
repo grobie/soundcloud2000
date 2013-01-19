@@ -1,7 +1,7 @@
 require 'curses'
 
 module Soundcloud2000
-  module Elements
+  module UI
     class Color
       COLORS = {
         :white  => 0,

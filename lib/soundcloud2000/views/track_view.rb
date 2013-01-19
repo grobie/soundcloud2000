@@ -1,4 +1,4 @@
-require_relative '../elements/table'
+require_relative '../ui/table'
 
 module Soundcloud2000
   module Views
@@ -32,7 +32,7 @@ module Soundcloud2000
     protected
 
       def initialize_table(x, y)
-        table = Elements::Table.new(Curses.lines, Curses.cols, x, y)
+        table = UI::Table.new(Curses.lines, Curses.cols, x, y)
         table.header 'Title', 'User', 'Length'
         table.body *tracks
 

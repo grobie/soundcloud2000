@@ -1,7 +1,7 @@
 require_relative 'widget'
 
 module Soundcloud2000
-  module Elements
+  module UI
     class Table < Widget
       PADDING = 1
 

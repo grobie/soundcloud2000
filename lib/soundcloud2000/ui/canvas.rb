@@ -1,7 +1,9 @@
+require 'curses'
+
 require_relative 'color'
 
 module Soundcloud2000
-  module Elements
+  module UI
     class Canvas
 
       def initialize
