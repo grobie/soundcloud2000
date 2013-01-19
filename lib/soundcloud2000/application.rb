@@ -9,17 +9,24 @@ module Soundcloud2000
       @canvas = Elements::Canvas.new
       @tracks = client.tracks
 
-      table = Elements::Table.new
-      table.header 'Title', 'User', 'Length'
-      table.body *@tracks.map { |track| [ track.title, track.user.username, track.duration.to_s ] }
+      @table = Elements::Table.new
+      @table.header 'Title', 'User', 'Length'
+      @table.body *@tracks[0..5].map { |track| [ track.title, track.user.username, track.duration.to_s ] }
 
-      @canvas.add table
+      @canvas.add @table
     end
 
     def run
       loop do
         @canvas.draw
-        sleep(0.1)
+        sleep(1)
+
+        # example. not really necessary though ...
+        unless @i_was_here_already
+          @i_was_here_already = true
+          @table.body *@tracks.map { |track| [ track.title, track.user.username, track.duration.to_s ] }
+        end
+
         break if stop?
       end
     ensure

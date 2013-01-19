@@ -9,19 +9,23 @@ module Soundcloud2000
       }
 
       def initialize(*args)
-        @fresh = false
+        @dirty = true
         # TODO: don't initialize all the time
         # Curses.start_color
         # Curses.init_pair(Curses::COLOR_BLUE, Curses::COLOR_BLUE,  Curses::COLOR_WHITE)
         # Curses.init_pair(Curses::COLOR_RED,  Curses::COLOR_RED,   Curses::COLOR_WHITE)
       end
 
-      def fresh?
-        @fresh == true
+      def dirty?
+        @dirty == true
       end
 
       def refresh
-        @fresh = true
+        @dirty = false
+      end
+
+      def dirty!
+        @dirty = true
       end
 
       def color(name)

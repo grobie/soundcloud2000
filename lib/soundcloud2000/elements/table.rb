@@ -57,6 +57,7 @@ module Soundcloud2000
             @sizes[index] = current if max < current
           end
         end
+        dirty!
       end
 
       def draw_header

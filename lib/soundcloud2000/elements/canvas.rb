@@ -18,7 +18,7 @@ module Soundcloud2000
 
       def draw
         @children.each do |child|
-          child.draw unless child.fresh?
+          child.draw if child.dirty?
         end
       end
 
