@@ -1,18 +1,6 @@
-PATH
-  remote: vendor/coreaudio-0.0.10
-  specs:
-    coreaudio (0.0.10)
-      narray (~> 0.6.0.0)
-
 GEM
   remote: http://rubygems.org/
   specs:
-    ffi (1.3.1)
-    ffi-locale (1.0.1)
-      ffi (>= 1.0.9)
-    ffi-ncurses (0.4.0)
-      ffi (>= 1.0.9)
-      ffi-locale (>= 1.0.0)
     hashie (1.2.0)
     httmultiparty (0.3.8)
       httparty (>= 0.7.3)
@@ -23,9 +11,6 @@ GEM
     multi_json (1.5.0)
     multi_xml (0.5.2)
     multipart-post (1.1.5)
-    narray (0.6.0.4)
-    rbcurse-core (0.0.3)
-      ffi-ncurses (>= 0.4.0)
     soundcloud (0.3.1)
       hashie
       httmultiparty (>= 0.3)
@@ -35,6 +20,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  coreaudio!
-  rbcurse-core
   soundcloud
