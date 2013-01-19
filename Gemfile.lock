@@ -1,3 +1,9 @@
+PATH
+  remote: vendor/coreaudio-0.0.10
+  specs:
+    coreaudio (0.0.10)
+      narray (~> 0.6.0.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -17,6 +23,7 @@ GEM
     multi_json (1.5.0)
     multi_xml (0.5.2)
     multipart-post (1.1.5)
+    narray (0.6.0.4)
     rbcurse-core (0.0.3)
       ffi-ncurses (>= 0.4.0)
     soundcloud (0.3.1)
@@ -28,5 +35,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  coreaudio!
   rbcurse-core
   soundcloud
