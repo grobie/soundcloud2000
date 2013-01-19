@@ -1,36 +1,31 @@
 require_relative 'elements/canvas'
-require_relative 'elements/table'
+require_relative 'views/track_view'
+require_relative 'input'
 
 module Soundcloud2000
   class Application
 
     def initialize(client)
-      @client = client
       @canvas = Elements::Canvas.new
-      @tracks = client.tracks
-
-      @table = Elements::Table.new
-      @table.header 'Title', 'User', 'Length'
-      @table.body *@tracks[0..5].map { |track| [ track.title, track.user.username, track.duration.to_s ] }
-
-      @canvas.add @table
+      @track_view = Views::TrackView.new(client)
+      @canvas.add @track_view
     end
 
     def run
       loop do
-        @canvas.draw
-        sleep(1)
-
-        # example. not really necessary though ...
-        unless @i_was_here_already
-          @i_was_here_already = true
-          @table.body *@tracks.map { |track| [ track.title, track.user.username, track.duration.to_s ] }
-        end
-
+        handle Input.get(100)
         break if stop?
       end
     ensure
       @canvas.close
+    end
+
+    # TODO: look at active panel and send key to active panel instead
+    def handle(key)
+      case key
+      when :down, :up
+        @track_view.send(key)
+      end
     end
 
     def stop

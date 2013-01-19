@@ -14,13 +14,13 @@ module Soundcloud2000
         @window = Curses::Window.new(@height, @width, @x, @y)
         @sizes = []
         @rows = []
+        @current = 0
 
         reset
       end
 
       def header(*elements)
         @header = elements
-        calculate_widths
         @header
       end
 
@@ -30,9 +30,24 @@ module Soundcloud2000
         @rows
       end
 
+      def up
+        if @current > 0
+          @current -= 1
+        else
+          false
+        end
+      end
+
+      def down
+        if (@current + 1) < @rows.size
+          @current += 1
+        else
+          false
+        end
+      end
+
       def reset
         @row = 0
-        @window.clear
         @window.box(ROW_SEPARATOR, LINE_SEPARATOR, INTERSECTION)
       end
 
@@ -57,7 +72,8 @@ module Soundcloud2000
             @sizes[index] = current if max < current
           end
         end
-        dirty!
+
+        draw
       end
 
       def draw_header

@@ -7,8 +7,8 @@ module Soundcloud2000
       @client = Soundcloud.new(client_id: client_id)
     end
 
-    def tracks
-      @client.get('/tracks', limit: 10)
+    def tracks(page = 1, limit = 10)
+      @client.get('/tracks', offset: (page - 1) * limit, limit: limit)
     end
 
   end
