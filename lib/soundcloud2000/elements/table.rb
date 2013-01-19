@@ -1,17 +1,13 @@
-require_relative 'element'
+require_relative 'widget'
 
 module Soundcloud2000
   module Elements
-    class Table < Element
-      ROW_SEPARATOR = ?|
-      LINE_SEPARATOR = ?-
-      INTERSECTION = ?+
+    class Table < Widget
       PADDING = 1
 
-      def initialize(height = Curses.lines, width = Curses.cols, x = 0, y = 0)
+      def initialize(*args)
         super
-        @height, @width, @x, @y = height, width, x, y
-        @window = Curses::Window.new(@height, @width, @x, @y)
+
         @sizes = []
         @rows = []
         @current = 0
@@ -33,6 +29,9 @@ module Soundcloud2000
       def up
         if @current > 0
           @current -= 1
+          draw
+
+          true
         else
           false
         end
@@ -41,26 +40,24 @@ module Soundcloud2000
       def down
         if (@current + 1) < @rows.size
           @current += 1
+          draw
+
+          true
         else
           false
         end
       end
 
       def reset
-        @row = 0
-        @window.box(ROW_SEPARATOR, LINE_SEPARATOR, INTERSECTION)
-      end
-
-      def refresh
         super
-        @window.refresh
+        @row = 0
       end
 
       def draw
-        reset
-        draw_header
-        draw_body
-        refresh
+        render do
+          draw_header
+          draw_body
+        end
       end
 
     protected
@@ -84,8 +81,10 @@ module Soundcloud2000
       end
 
       def draw_body
-        @rows.each do |row|
-          draw_values(row)
+        @rows.each_with_index do |row, index|
+          color(:white, index == @current ? :inverse : nil) do
+            draw_values(row)
+          end
         end
       end
 

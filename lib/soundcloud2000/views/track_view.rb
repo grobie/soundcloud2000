@@ -13,15 +13,12 @@ module Soundcloud2000
       end
 
       def down
-        # FIXME. HACK
-        @table.body *tracks
-
         unless @table.down
           @tracks += load_tracks(@page += 1)
           @table.body *tracks
-        end
 
-        @table.down
+          @table.down
+        end
       end
 
       def up

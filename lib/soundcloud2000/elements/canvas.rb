@@ -1,13 +1,15 @@
-require_relative 'element'
+require_relative 'color'
 
 module Soundcloud2000
   module Elements
-    class Canvas < Element
+    class Canvas
 
       def initialize
         Curses.noecho # do not show typed keys
-        Curses.init_screen
         Curses.stdscr.keypad(true) # enable arrow keys
+        Curses.init_screen
+
+        Color.init
 
         @children = []
       end
