@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/soundcloud2000'
+
+Soundcloud2000.start
