@@ -1,3 +1,5 @@
+require 'curses'
+
 module Soundcloud2000
   module Elements
     class Element
@@ -6,12 +8,20 @@ module Soundcloud2000
         :blue => Curses::COLOR_BLUE,
       }
 
-      def initialize(height = Curses.height, width = Curses.width)
-        @height, @width = height, width
+      def initialize(*args)
+        @fresh = false
         # TODO: don't initialize all the time
-        Curses.start_color
-        Curses.init_pair(Curses::COLOR_BLUE, Curses::COLOR_BLUE,  Curses::COLOR_WHITE)
-        Curses.init_pair(Curses::COLOR_RED,  Curses::COLOR_RED,   Curses::COLOR_WHITE)
+        # Curses.start_color
+        # Curses.init_pair(Curses::COLOR_BLUE, Curses::COLOR_BLUE,  Curses::COLOR_WHITE)
+        # Curses.init_pair(Curses::COLOR_RED,  Curses::COLOR_RED,   Curses::COLOR_WHITE)
+      end
+
+      def fresh?
+        @fresh == true
+      end
+
+      def refresh
+        @fresh = true
       end
 
       def color(name)

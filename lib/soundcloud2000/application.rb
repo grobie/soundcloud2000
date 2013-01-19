@@ -1,20 +1,37 @@
-require 'curses'
+require_relative 'elements/canvas'
+require_relative 'elements/table'
 
 module Soundcloud2000
   class Application
 
-    def initialize
-      Curses.noecho # do not show typed keys
-      Curses.init_screen
-      Curses.stdscr.keypad(true) # enable arrow keys
+    def initialize(client)
+      @client = client
+      @canvas = Elements::Canvas.new
+      @tracks = client.tracks
+
+      table = Elements::Table.new
+      table.header 'Title', 'User', 'Length'
+      table.body *@tracks.map { |track| [ track.title, track.user.username, track.duration.to_s ] }
+
+      @canvas.add table
     end
 
     def run
       loop do
-        yield
+        @canvas.draw
+        sleep(0.1)
+        break if stop?
       end
     ensure
-      Curses.close_screen
+      @canvas.close
+    end
+
+    def stop
+      @stop = true
+    end
+
+    def stop?
+      @stop == true
     end
 
   end

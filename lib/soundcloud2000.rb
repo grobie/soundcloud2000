@@ -1,19 +1,18 @@
 require_relative 'soundcloud2000/client'
 require_relative 'soundcloud2000/application'
-require_relative 'soundcloud2000/elements/table'
 
 module Soundcloud2000
+  CLIENT_ID = '29f8e018e1272c27bff7d510a10da2a8'
 
   def self.start
-    client = Client.new
-    application = Application.new
+    client = Client.new(CLIENT_ID)
+    application = Application.new(client)
 
-    application.run do
-      table = Elements::Table.new
-      table.header 'soundcloud2000'
-      table.body *client.tracks.map { |track| [ track.title, track.user.username ] }
-      table.draw
+    Signal.trap('SIGINT') do
+      application.stop
     end
+
+    application.run
   end
 
 end
