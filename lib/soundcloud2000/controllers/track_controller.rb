@@ -45,14 +45,18 @@ module Soundcloud2000
             track.title,
             track.user.username,
             TimeHelper.duration(track.duration),
-            track.favoritings_count.to_s
+            track.playback_count.to_s,
+            track.favoritings_count.to_s,
+            track.comment_count.to_s,
+            track.genre,
+            track.permalink_url
           ]
         end
       end
 
       def initialize_table(x, y)
         table = UI::Table.new(Curses.lines, Curses.cols, x, y)
-        table.header 'Title', 'User', 'Length', 'Liked'
+        table.header 'Title', 'User', 'Length', 'Plays', 'Likes', 'Comments', 'Genre', 'URL'
         table.body(*rows)
 
         table

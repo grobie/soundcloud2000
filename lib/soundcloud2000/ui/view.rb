@@ -44,7 +44,7 @@ module Soundcloud2000
 
       def line(content)
         @window.setpos(line_number, padding)
-        @window.addstr(content.ljust(body_width))
+        @window.addstr(content.ljust(body_width).slice(0, body_width))
       end
 
       def reset

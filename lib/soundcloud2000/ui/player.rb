@@ -26,7 +26,7 @@ module Soundcloud2000
       end
 
       def track_info
-        "        #{track.playback_count} plays | #{track.favoritings_count} likes | #{track.genre}"
+        "        #{track.playback_count} plays | #{track.favoritings_count} likes | #{track.comment_count} | #{track.genre} | #{track.permalink_url}"
       end
 
       def duration
