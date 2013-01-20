@@ -18,7 +18,9 @@ module Soundcloud2000
 
       def draw
         line progress
-        line (duration + ' - ' + status).ljust(16) + @player.title
+        with_color(:green) do
+          line (duration + ' - ' + status).ljust(16) + @player.title
+        end
         line track_info
         spectrum.transpose[0...lines_left].reverse.each do |l|
           line l.join

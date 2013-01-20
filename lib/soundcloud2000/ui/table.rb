@@ -93,7 +93,7 @@ module Soundcloud2000
 
       def draw_header
         if @header
-          with_color(:blue) do
+          with_color(:green_reverse) do
             draw_values(@header)
           end
         end
@@ -101,7 +101,7 @@ module Soundcloud2000
 
       def color_for(index)
         if @top + index == @current
-          :red
+          :cyan
         elsif @top + index == @selected
           :black
         else

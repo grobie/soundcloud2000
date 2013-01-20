@@ -51,7 +51,9 @@ module Soundcloud2000
       def draw
         0.upto(top) { line '' }
         lines.each do |row|
-          line ' ' * left + row
+          with_color(:green) do
+            line ' ' * left + row
+          end
         end
       end
 
