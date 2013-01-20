@@ -4,6 +4,8 @@ module Soundcloud2000
 
       def initialize(*attrs)
         super
+
+        padding 2
       end
 
       def player(instance)
@@ -18,13 +20,12 @@ module Soundcloud2000
       end
 
       def draw_progress
-        @window.setpos(@line += 1, 0)
-        @window.addstr(('-' * @player.play_progress.ceil + '>' + "#{@player.play_progress.inspect}").ljust(width))
+        line '#' * (@player.play_progress * body_width).ceil
+        line @player.play_progress.inspect.ljust(body_width)
       end
 
       def draw_meta
-        @window.setpos(@line += 1, 0)
-        @window.addstr(@player.title)
+        line @player.title
       end
 
     end

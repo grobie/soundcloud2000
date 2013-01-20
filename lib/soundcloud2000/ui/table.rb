@@ -3,7 +3,7 @@ require_relative 'view'
 module Soundcloud2000
   module UI
     class Table < View
-      PADDING = 1
+      SEPARATOR = ' '
 
       attr_reader :current
 
@@ -68,7 +68,7 @@ module Soundcloud2000
     protected
 
       def rest_width(elements)
-        width - elements.size * PADDING - elements.inject(0) { |sum, size| sum += size }
+        width - elements.size * SEPARATOR.size - elements.inject(0) { |sum, size| sum += size }
       end
 
       def calculate_widths
@@ -117,12 +117,9 @@ module Soundcloud2000
 
       def draw_values(values)
         i = -1
-        draw_row(values.map { |value| value.ljust(@sizes[i += 1]) }.join(' ' * PADDING))
-      end
+        content = values.map { |value| value.ljust(@sizes[i += 1]) }.join(SEPARATOR)
 
-      def draw_row(content)
-        @window.setpos(@line += 1, 0)
-        @window.addstr(content)
+        line content
       end
 
     end
