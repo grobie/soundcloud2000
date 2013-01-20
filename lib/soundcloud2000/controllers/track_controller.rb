@@ -33,6 +33,10 @@ module Soundcloud2000
         end
       end
 
+      def render
+        @table.render
+      end
+
     protected
 
       def more?

@@ -23,6 +23,12 @@ module Soundcloud2000
     def main
       loop do
         handle UI::Input.get(100)
+
+        unless @workaround_was_called_once_already
+          @workaround_was_called_once_already = true
+          @track_controller.render
+        end
+
         break if stop?
       end
     ensure
@@ -30,7 +36,7 @@ module Soundcloud2000
     end
 
     def run
-      @splash_controller.process
+      @splash_controller.render
       main
     end
 

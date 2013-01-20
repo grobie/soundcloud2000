@@ -10,7 +10,7 @@ module Soundcloud2000
         @view = UI::Splash.new
       end
 
-      def process
+      def render
         @view.render
       end
 
