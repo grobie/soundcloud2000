@@ -20,7 +20,7 @@ module Soundcloud2000
         line progress
         line (duration + ' - ' + status).ljust(16) + @player.title
         line track_info
-        spectrum.transpose.each do |l|
+        spectrum.transpose[0...lines_left].reverse.each do |l|
           line l.join
         end
       end
@@ -34,7 +34,7 @@ module Soundcloud2000
       end
 
       def spectrum
-        max = 50
+        max = 5
         @player.spectrum.map do |i|
           x = (0...i.to_i).map { '#' }
           x = x.slice(0, max) if x.size > max

@@ -26,7 +26,7 @@ module AudioPlayer
               slice = @audio_buffer[@position]
               @output_buffer << slice
               fft = FFTW3.fft(slice, 1, 0) / slice.length
-              spectrum = (1..20).map {|i| fft[i * 20].abs }
+              spectrum = (1..100).map {|i| fft[i * 20].abs }
               @callback.call(@position, @audio_buffer.size, spectrum)
               @position += 1
             end
