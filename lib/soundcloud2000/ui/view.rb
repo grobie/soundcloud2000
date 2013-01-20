@@ -5,7 +5,7 @@ require_relative '../events'
 
 module Soundcloud2000
   module UI
-    class Widget
+    class View
       ROW_SEPARATOR = ?|
       LINE_SEPARATOR = ?-
       INTERSECTION = ?+

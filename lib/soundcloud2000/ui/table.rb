@@ -1,8 +1,8 @@
-require_relative 'widget'
+require_relative 'view'
 
 module Soundcloud2000
   module UI
-    class Table < Widget
+    class Table < View
       PADDING = 1
 
       attr_reader :current
