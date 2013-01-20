@@ -17,9 +17,17 @@ module Soundcloud2000
     protected
 
       def draw
-        line '#' * (@player.play_progress * body_width).ceil
-        line duration.ljust(10) + @player.title
+        line progress
+        line (duration + ' - ' + status).ljust(16) + @player.title
         line track_info
+      end
+
+      def status
+        @player.playing? ? 'playing' : 'paused'
+      end
+
+      def progress
+        '#' * (@player.play_progress * body_width).ceil
       end
 
       def track

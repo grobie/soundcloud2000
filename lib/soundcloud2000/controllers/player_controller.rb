@@ -18,9 +18,11 @@ module Soundcloud2000
 
         events.on(:key) do |key|
           case key
-          when :left then @player.rewind
+          when :left then  @player.rewind
           when :right then @player.forward
-          when :space then @player.toggle
+          when :space
+            @player.toggle
+            @view.render
           end
         end
       end
