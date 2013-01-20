@@ -43,6 +43,10 @@ module Soundcloud2000
       @audio.seconds_played
     end
 
+    def spectrum
+      @audio.spectrum
+    end
+
     def title
       [@track.title, @track.user.username].join(' - ')
     end

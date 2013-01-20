@@ -1,3 +1,5 @@
+require "fftw3"
+
 module AudioPlayer
   class PlayThread
     def initialize(logger, output_buffer, audio_buffer, &callback)
@@ -21,8 +23,11 @@ module AudioPlayer
 
           loop do
             if @position < @audio_buffer.size
-              @output_buffer << @audio_buffer[@position]
-              @callback.call(@position, @audio_buffer.size)
+              slice = @audio_buffer[@position]
+              @output_buffer << slice
+              fft = FFTW3.fft(slice, 1, 0) / slice.length
+              spectrum = (1..20).map {|i| fft[i * 20].abs }
+              @callback.call(@position, @audio_buffer.size, spectrum)
               @position += 1
             end
           end
@@ -30,6 +35,7 @@ module AudioPlayer
           log :stopped_running
         rescue => e
           log e.message
+          log e.backtrace
         end
       end
     end

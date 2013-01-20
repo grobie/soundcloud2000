@@ -26,11 +26,16 @@ module AudioPlayer
       DownloadThread.new(@logger, url, filename).start unless File.exist?(filename)
       @audio_buffer = AudioBuffer.new(@logger, filename).read
 
-      @play_thread = PlayThread.new(@logger, @output_buffer, @audio_buffer) do |position, size|
+      @play_thread = PlayThread.new(@logger, @output_buffer, @audio_buffer) do |position, size, spectrum|
         @position = position * SLICE_LENGTH
         @size = size * SLICE_LENGTH
+        @spectrum = spectrum
         block.call(self)
       end
+    end
+
+    def spectrum
+      @spectrum
     end
 
     def seconds_played
