@@ -13,6 +13,7 @@ module Soundcloud2000
         @sizes = []
         @rows = []
         @current, @top = 0, 0
+        @selected = nil
 
         reset
       end
@@ -56,6 +57,14 @@ module Soundcloud2000
         end
       end
 
+      def select
+        @selected = @current
+      end
+
+      def deselect
+        @selected = nil
+      end
+
     protected
 
       def rest_width(elements)
@@ -82,15 +91,25 @@ module Soundcloud2000
 
       def draw_header
         if @header
-          color(:blue) do
+          with_color(:blue) do
             draw_values(@header)
           end
         end
       end
 
+      def color_for(index)
+        if @top + index == @current
+          :black
+        elsif @top + index == @selected
+          :red
+        else
+          :white
+        end
+      end
+
       def draw_body
         @rows[@top, body_height + 1].each_with_index do |row, index|
-          color(:white, @top + index == @current ? :inverse : nil) do
+          with_color(color_for(index)) do
             draw_values(row)
           end
         end

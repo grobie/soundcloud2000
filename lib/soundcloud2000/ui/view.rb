@@ -24,8 +24,8 @@ module Soundcloud2000
         refresh
       end
 
-      def color(name, inverse = nil, &block)
-        window.attron(Color.get(name, inverse), &block)
+      def with_color(name, &block)
+        window.attron(Color.get(name), &block)
       end
 
     protected

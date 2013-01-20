@@ -17,6 +17,7 @@ module Soundcloud2000
         events.on(:key) do |key|
           case key
           when :enter
+            @table.select
             events.trigger(:select, @tracks[@table.current])
           when :up
             @table.up
