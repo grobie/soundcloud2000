@@ -1,5 +1,6 @@
 require_relative '../ui/table'
 require_relative '../events'
+require_relative '../time_helper'
 
 module Soundcloud2000
   module Controllers
@@ -27,7 +28,7 @@ module Soundcloud2000
       end
 
       def tracks
-        @tracks.map { |track| [ track.title, track.user.username, track.duration.to_s ] }
+        @tracks.map { |track| [ track.title, track.user.username, TimeHelper.duration(track.duration) ] }
       end
 
     protected

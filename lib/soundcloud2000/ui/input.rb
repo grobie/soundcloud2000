@@ -13,9 +13,7 @@ module Soundcloud2000
 
       def self.get(delay = 0)
         Curses.timeout = delay
-        if c = Curses.getch
-          MAPPING[c] or raise "key mapping not found for #{c.inspect}"
-        end
+        MAPPING[Curses.getch]
       end
 
     end
