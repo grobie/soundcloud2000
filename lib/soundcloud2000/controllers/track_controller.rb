@@ -13,6 +13,7 @@ module Soundcloud2000
         @client = client
         @tracks = load_tracks(@page)
         @table = initialize_table(x, y)
+        @loaded = false
 
         events.on(:key) do |key|
           case key
@@ -24,7 +25,7 @@ module Soundcloud2000
           when :down
             @table.down
 
-            if @table.bottom?
+            if @table.bottom? && more?
               @tracks += load_tracks(@page += 1)
               @table.body(*rows)
             end
@@ -33,6 +34,10 @@ module Soundcloud2000
       end
 
     protected
+
+      def more?
+        @loaded = true
+      end
 
       def rows
         @tracks.map do |track|
@@ -54,7 +59,9 @@ module Soundcloud2000
       end
 
       def load_tracks(page)
-        @client.tracks(page)
+        tracks = @client.tracks(page)
+        @loaded = true if tracks.empty?
+        tracks
       end
 
     end

@@ -3,7 +3,7 @@ require_relative 'view'
 module Soundcloud2000
   module UI
     class Table < View
-      SEPARATOR = ' '
+      SEPARATOR = '  |  '
 
       attr_reader :current
 
@@ -74,7 +74,7 @@ module Soundcloud2000
       end
 
       def calculate_widths
-        @rows.each do |row|
+        (@rows + [@header]).each do |row|
           row.each_with_index do |value, index|
             current, max = value.length, @sizes[index] || 0
             @sizes[index] = current if max < current
