@@ -9,7 +9,7 @@ module Soundcloud2000
     def initialize(client)
       @canvas = UI::Canvas.new
       # @player_controller = Views::PlayerView.new
-      @track_controller = Controllers::TrackController.new(client)
+      @track_controller = Controllers::TrackController.new(client, 10)
       @track_controller.events.on(:select) do |track|
         # @player_controller.play(track)
       end

@@ -15,7 +15,7 @@ module Soundcloud2000
 
       def initialize(height = Curses.lines, width = Curses.cols, x = 0, y = 0)
         @height, @width, @x, @y = height, width, x, y
-        @window = Curses::Window.new(height, width, x, y)
+        @window = Curses::Window.new(height - x, width - y, x, y)
         @events = Events.new
       end
 
