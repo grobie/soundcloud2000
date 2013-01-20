@@ -1,3 +1,5 @@
+require_relative '../time_helper'
+
 module Soundcloud2000
   module UI
     class Player < View
@@ -15,17 +17,20 @@ module Soundcloud2000
     protected
 
       def draw
-        draw_progress
-        draw_meta
-      end
-
-      def draw_progress
         line '#' * (@player.play_progress * body_width).ceil
-        line @player.play_progress.inspect.ljust(body_width)
+        line duration.ljust(10) + @player.title + track_info
       end
 
-      def draw_meta
-        line @player.title
+      def track
+        @player.track
+      end
+
+      def track_info
+        "        #{track.playback_count} plays | #{track.favoritings_count} likes | #{track.genre}"
+      end
+
+      def duration
+        TimeHelper.duration(@player.seconds_played.to_i * 1000)
       end
 
     end

@@ -6,6 +6,7 @@ require_relative 'play_thread'
 
 module AudioPlayer
   class Player
+    SLICE_LENGTH = 1024.0 / 44100
 
     def initialize(logger, audio_folder = "~/.audio_player")
       @logger = logger
@@ -26,14 +27,18 @@ module AudioPlayer
       @audio_buffer = AudioBuffer.new(@logger, filename).read
 
       @play_thread = PlayThread.new(@logger, @output_buffer, @audio_buffer) do |position, size|
-        @position = position
-        @size = size
+        @position = position * SLICE_LENGTH
+        @size = size * SLICE_LENGTH
         block.call(self)
       end
     end
 
+    def seconds_played
+      @position
+    end
+
     def play_progress
-      @position.to_f / @size
+      @position / @size
     end
 
     def playing?

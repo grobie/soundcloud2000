@@ -16,14 +16,25 @@ module AudioPlayer
     def close
       @file.close
     end
+
+    def self.slices_for(size)
+      (size - 52) / 372
+    end
+
+    def self.size_for(slices)
+      slices * 372 + 52
+    end
+
     def downloaded_slices
-      (File.size(@file_path) - 52) / 372
+      self.class.slices_for(File.size(@file_path))
     end
 
     def read
       Thread.start do
         log :thread_start
         begin
+          log downloaded_slices
+
           loop do
             sleep 0.1 while downloaded_slices < @slices.size
 

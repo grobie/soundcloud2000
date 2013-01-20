@@ -2,6 +2,7 @@ require_relative '../audio_player/player'
 
 module Soundcloud2000
   class Player
+    attr_reader :track
 
     def initialize(logger)
       @logger = logger
@@ -12,6 +13,8 @@ module Soundcloud2000
     def play(track, location, &callback)
       @track = track
       @location = location
+
+      @logger.warn @track.inspect
 
       load(&callback)
     end
@@ -34,6 +37,10 @@ module Soundcloud2000
 
     def play_progress
       @audio.play_progress
+    end
+
+    def seconds_played
+      @audio.seconds_played
     end
 
     def title
