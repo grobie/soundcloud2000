@@ -2,8 +2,8 @@
 
 The next generation SoundCloud client. Without all these stupid CSS files.
 
-![Screen Shot 2013-01-20 at 15 23 52](https://f.cloud.github.com/assets/3432/81267/4053e33e-630d-11e2-8078-3effb0266bb1.png)
-![Screen Shot 2013-01-20 at 15 24 20](https://f.cloud.github.com/assets/3432/81268/405533ce-630d-11e2-99a1-b7811b2d69ab.png)
+![Screen Shot 2013-01-20 at 15 37 03](https://f.cloud.github.com/assets/3432/81282/06c44c7e-630f-11e2-9a91-85c9b917835c.png)
+![Screen Shot 2013-01-20 at 15 37 54](https://f.cloud.github.com/assets/3432/81281/06b05df4-630f-11e2-8b55-7f3c18126831.png)
 
 ## Development
 
