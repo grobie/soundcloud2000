@@ -16,9 +16,8 @@ module AudioPlayer
     def close
       @file.close
     end
-
     def downloaded_slices
-      File.size(@file_path) / 1024
+      (File.size(@file_path) - 52) / 372
     end
 
     def read

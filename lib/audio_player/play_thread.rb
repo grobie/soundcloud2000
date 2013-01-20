@@ -15,12 +15,11 @@ module AudioPlayer
     def start_thread!
       @thread = Thread.start do
         begin
-          @running = true
           log :thread_start
           sleep 0.1 while @audio_buffer.size == 0
           log :playing
 
-          while @running
+          loop do
             if @position < @audio_buffer.size
               @output_buffer << @audio_buffer[@position]
               @callback.call(@position, @audio_buffer.size)
