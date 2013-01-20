@@ -12,7 +12,7 @@ module Soundcloud2000
 
         @sizes = []
         @rows = []
-        @current = 0
+        @current, @top = 0, 0
 
         events.on(:key) do |key|
           case key
@@ -35,9 +35,18 @@ module Soundcloud2000
         @rows
       end
 
+      def length
+        @rows.size
+      end
+
+      def body_height
+        height - Array(@header).size
+      end
+
       def up
         if @current > 0
           @current -= 1
+          @top -= 1 if @current < @top
           draw
 
           true
@@ -46,13 +55,10 @@ module Soundcloud2000
         end
       end
 
-      def length
-        @rows.size
-      end
-
       def down
         if (@current + 1) < length
           @current += 1
+          @top += 1 if @current > body_height
           draw
 
           true
@@ -88,14 +94,15 @@ module Soundcloud2000
 
       def draw_header
         if @header
-          draw_values(@header)
-          draw_line
+          color(:blue) do
+            draw_values(@header)
+          end
         end
       end
 
       def draw_body
-        @rows.each_with_index do |row, index|
-          color(:white, index == @current ? :inverse : nil) do
+        @rows[@top, body_height + 1].each_with_index do |row, index|
+          color(:white, @top + index == @current ? :inverse : nil) do
             draw_values(row)
           end
         end

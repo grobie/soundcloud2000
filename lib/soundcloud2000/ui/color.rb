@@ -6,11 +6,13 @@ module Soundcloud2000
       COLORS = {
         :white  => 0,
         :red    => 1,
+        :blue   => 2,
       }
 
       DEFINITION = {
         COLORS[:white] => [ Curses::COLOR_WHITE, Curses::COLOR_BLACK ],
         COLORS[:red]   => [ Curses::COLOR_RED,   Curses::COLOR_WHITE ],
+        COLORS[:blue]  => [ Curses::COLOR_BLUE,  Curses::COLOR_WHITE ],
       }
 
       def self.init

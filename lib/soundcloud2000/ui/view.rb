@@ -14,13 +14,12 @@ module Soundcloud2000
       attr_reader :window, :events
 
       def initialize(height = Curses.lines, width = Curses.cols, x = 0, y = 0)
-        @height, @width, @x, @y = height, width, x, y
-        @window = Curses::Window.new(height - x, width - y, x, y)
+        @height, @width, @x, @y = height - x, width - y, x, y
+        @window = Curses::Window.new(height, width, x, y)
         @events = Events.new
       end
 
       def reset
-        window.box(ROW_SEPARATOR, LINE_SEPARATOR, INTERSECTION)
       end
 
       def refresh
