@@ -1,25 +1,29 @@
-require_relative '../ui/table'
-require_relative '../events'
+require_relative 'controller'
 require_relative '../time_helper'
+require_relative '../ui/table'
 
 module Soundcloud2000
   module Controllers
-    class TrackController
-      attr_reader :table, :events
+    class TrackController < Controller
 
       def initialize(client, x = 0, y = 0)
-        @events = Events.new
+        super
+
         @page = 1
         @client = client
         @tracks = load_tracks(@page)
-
         @table = initialize_table(x, y)
-        @table.events.on(:key) do |key|
+
+        events.on(:key) do |key|
           case key
           when :enter
-            @events.trigger(:select, @tracks[@table.current])
+            events.trigger(:select, @tracks[@table.current])
+          when :up
+            @table.up
           when :down
-            if @table.current + 1 >= @table.length
+            @table.down
+
+            if @table.bottom?
               @tracks += load_tracks(@page += 1)
               @table.body(*tracks)
             end
@@ -27,11 +31,11 @@ module Soundcloud2000
         end
       end
 
+    protected
+
       def tracks
         @tracks.map { |track| [ track.title, track.user.username, TimeHelper.duration(track.duration) ] }
       end
-
-    protected
 
       def initialize_table(x, y)
         table = UI::Table.new(Curses.lines, Curses.cols, x, y)

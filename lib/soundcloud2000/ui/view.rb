@@ -1,7 +1,6 @@
 require 'curses'
 
 require_relative 'color'
-require_relative '../events'
 
 module Soundcloud2000
   module UI
@@ -11,12 +10,11 @@ module Soundcloud2000
       INTERSECTION = ?+
 
       attr_reader :height, :width, :x, :y
-      attr_reader :window, :events
+      attr_reader :window
 
       def initialize(height = Curses.lines, width = Curses.cols, x = 0, y = 0)
         @height, @width, @x, @y = height - x, width - y, x, y
         @window = Curses::Window.new(height, width, x, y)
-        @events = Events.new
         @line = 0
       end
 

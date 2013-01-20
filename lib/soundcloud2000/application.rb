@@ -27,14 +27,13 @@ module Soundcloud2000
       @canvas.close
     end
 
-    # TODO: look at active panel and send key to active panel instead
+    # TODO: look at active controller and send key to active controller instead
     def handle(key)
       case key
       when :left, :right, :space
         @player_controller.events.trigger(:key, key)
       when :down, :up, :enter
-        # HACK. Register views and use focus instead
-        @track_controller.table.events.trigger(:key, key)
+        @track_controller.events.trigger(:key, key)
       end
     end
 

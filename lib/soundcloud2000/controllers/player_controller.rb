@@ -1,22 +1,22 @@
-require_relative '../ui/player'
-require_relative '../events'
+require_relative 'controller'
 require_relative '../player'
+require_relative '../ui/player'
 
 module Soundcloud2000
   module Controllers
-    class PlayerController
-      attr_reader :events
+    class PlayerController < Controller
 
       def initialize(logger, client, h, w, x, y)
+        super
+
         @logger = logger
         @client = client
-        @events = Events.new
         @player = Player.new(@logger)
 
         @view = UI::Player.new(h, w, x, y)
         @view.player(@player)
 
-        @events.on(:key) do |key|
+        events.on(:key) do |key|
           case key
           when :left then @player.rewind
           when :right then @player.forward

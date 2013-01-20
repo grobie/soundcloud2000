@@ -14,13 +14,6 @@ module Soundcloud2000
         @rows = []
         @current, @top = 0, 0
 
-        events.on(:key) do |key|
-          case key
-          when :up then up
-          when :down then down
-          end
-        end
-
         reset
       end
 
@@ -41,6 +34,10 @@ module Soundcloud2000
 
       def body_height
         height - Array(@header).size
+      end
+
+      def bottom?
+        current + 1 >= length
       end
 
       def up
