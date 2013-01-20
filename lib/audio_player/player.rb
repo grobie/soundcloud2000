@@ -12,14 +12,13 @@ module AudioPlayer
       @audio_folder = File.expand_path(audio_folder)
       @output_device = CoreAudio.default_output_device
       @output_buffer = @output_device.output_buffer(1024)
-      @playing = false
-      @position = 0
-      @size = 100
 
+      reset
       Dir.mkdir(@audio_folder) unless File.exist?(@audio_folder)
     end
 
     def load(url, id, &block)
+      reset
       @play_thread.kill if @play_thread
 
       filename = "#{@audio_folder}/#{id}"
@@ -50,10 +49,8 @@ module AudioPlayer
     end
 
     def stop
-      if playing?
-        @play_thread.stop
-        @playing = false
-      end
+      @play_thread.stop if @play_thread
+      @playing = false
     end
 
     def start
@@ -69,6 +66,12 @@ module AudioPlayer
       else
         start
       end
+    end
+
+    def reset
+      stop
+      @position = 0
+      @size = 1/0.0
     end
   end
 end
