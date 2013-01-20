@@ -47,11 +47,7 @@ module Soundcloud2000
         if @current > 0
           @current -= 1
           @top -= 1 if @current < @top
-          draw
-
-          true
-        else
-          false
+          render
         end
       end
 
@@ -59,23 +55,7 @@ module Soundcloud2000
         if (@current + 1) < length
           @current += 1
           @top += 1 if @current > body_height
-          draw
-
-          true
-        else
-          false
-        end
-      end
-
-      def reset
-        super
-        @row = 0
-      end
-
-      def draw
-        render do
-          draw_header
-          draw_body
+          render
         end
       end
 
@@ -95,7 +75,12 @@ module Soundcloud2000
 
         @sizes[-1] = rest_width(@sizes[0...-1])
 
-        draw
+        render
+      end
+
+      def draw
+        draw_header
+        draw_body
       end
 
       def draw_header
@@ -120,7 +105,7 @@ module Soundcloud2000
       end
 
       def draw_row(content)
-        @window.setpos(@row += 1, 0)
+        @window.setpos(@line += 1, 0)
         @window.addstr(content)
       end
 

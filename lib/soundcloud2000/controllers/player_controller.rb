@@ -1,7 +1,6 @@
-require_relative '../ui/view'
+require_relative '../ui/player'
 require_relative '../events'
-require_relative '../../audio_player/player'
-require 'net/http'
+require_relative '../player'
 
 module Soundcloud2000
   module Controllers
@@ -12,8 +11,11 @@ module Soundcloud2000
         @logger = logger
         @client = client
         @events = Events.new
-        @view = UI::View.new(h, w, x, y)
-        @player = AudioPlayer::Player.new(@logger)
+        @player = Player.new(@logger)
+
+        @view = UI::Player.new(h, w, x, y)
+        @view.player(@player)
+
         @events.on(:key) do |key|
           case key
           when :left then @player.rewind
@@ -24,24 +26,13 @@ module Soundcloud2000
       end
 
       def play(track)
-        uri = URI.parse(track.stream_url + '?client_id=' + @client.client_id)
-        Net::HTTP.get_response(uri) do |res|
-          if res.code == '302'
-            load res.header['Location'], track
-          end
+        location = @client.location(track.stream_url)
+
+        @player.play(track, location) do
+          @view.render
         end
       end
 
-      def load(url, track)
-        @player.load(url, track.id) do |pos, size|
-          col = (pos * @view.width / size).to_i
-          @view.render do
-            @view.window.setpos(0, 5)
-            @view.window.addstr(('-' * col + '>').ljust(@view.width))
-          end
-        end
-        @player.start
-      end
     end
   end
 end

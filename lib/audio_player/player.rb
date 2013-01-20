@@ -6,13 +6,14 @@ require_relative 'play_thread'
 
 module AudioPlayer
   class Player
-    attr_reader :playing
 
     def initialize(logger, audio_folder = "~/.audio_player")
       @logger = logger
       @audio_folder = File.expand_path(audio_folder)
       @output_device = CoreAudio.default_output_device
       @playing = false
+      @position = 0
+      @size = 100
 
       Dir.mkdir(@audio_folder) unless File.exist?(@audio_folder)
     end
@@ -25,7 +26,19 @@ module AudioPlayer
       audio_buffer = AudioBuffer.new(@logger, filename).read
       output_buffer = @output_device.output_buffer(1024)
 
-      @play_thread = PlayThread.new(@logger, output_buffer, audio_buffer, block)
+      @play_thread = PlayThread.new(@logger, output_buffer, audio_buffer) do |position, size|
+        @position = position
+        @size = size
+        block.call(self)
+      end
+    end
+
+    def play_progress
+      @position.to_f / @size
+    end
+
+    def playing?
+      @play_thread && @playing == true
     end
 
     def rewind
@@ -37,21 +50,21 @@ module AudioPlayer
     end
 
     def stop
-      if @play_thread && @playing
+      if playing?
         @play_thread.stop
         @playing = false
       end
     end
 
     def start
-      if @play_thread && !playing
+      if @play_thread && !playing?
         @play_thread.start
         @playing = true
       end
     end
 
     def toggle
-      if @playing
+      if playing?
         stop
       else
         start

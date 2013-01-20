@@ -1,6 +1,6 @@
 module AudioPlayer
   class PlayThread
-    def initialize(logger, output_buffer, audio_buffer, callback)
+    def initialize(logger, output_buffer, audio_buffer, &callback)
       @logger = logger
       @output_buffer = output_buffer
       @audio_buffer = audio_buffer

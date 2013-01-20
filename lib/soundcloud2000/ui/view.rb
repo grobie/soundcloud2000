@@ -17,27 +17,31 @@ module Soundcloud2000
         @height, @width, @x, @y = height - x, width - y, x, y
         @window = Curses::Window.new(height, width, x, y)
         @events = Events.new
+        @line = 0
       end
 
+      def render
+        reset
+        draw
+        refresh
+      end
+
+      def color(name, inverse = nil, &block)
+        window.attron(Color.get(name, inverse), &block)
+      end
+
+    protected
+
       def reset
+        @line = 0
       end
 
       def refresh
         window.refresh
       end
 
-      def render
-        reset
-        yield
-        refresh
-      end
-
       def draw
         raise NotImplementedError
-      end
-
-      def color(name, inverse = nil, &block)
-        window.attron(Color.get(name, inverse), &block)
       end
 
     end
