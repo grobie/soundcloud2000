@@ -59,10 +59,12 @@ module Soundcloud2000
 
       def select
         @selected = @current
+        render
       end
 
       def deselect
         @selected = nil
+        render
       end
 
     protected
@@ -99,9 +101,9 @@ module Soundcloud2000
 
       def color_for(index)
         if @top + index == @current
-          :black
-        elsif @top + index == @selected
           :red
+        elsif @top + index == @selected
+          :black
         else
           :white
         end
