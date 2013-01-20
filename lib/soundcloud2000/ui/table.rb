@@ -81,6 +81,10 @@ module Soundcloud2000
 
     protected
 
+      def rest_width(elements)
+        width - elements.size * PADDING - elements.inject(0) { |sum, size| sum += size }
+      end
+
       def calculate_widths
         @rows.each do |row|
           row.each_with_index do |value, index|
@@ -88,6 +92,8 @@ module Soundcloud2000
             @sizes[index] = current if max < current
           end
         end
+
+        @sizes[-1] = rest_width(@sizes[0...-1])
 
         draw
       end
@@ -108,18 +114,13 @@ module Soundcloud2000
         end
       end
 
-      def draw_line
-        draw_content(INTERSECTION + LINE_SEPARATOR * (width - 2) + INTERSECTION, 0)
-      end
-
-      def draw_values(values, padding = PADDING)
-        space = ' ' * [padding, 0].max
+      def draw_values(values)
         i = -1
-        draw_content(values.map { |value| value.ljust(@sizes[i += 1]) }.join(space))
+        draw_row(values.map { |value| value.ljust(@sizes[i += 1]) }.join(' ' * PADDING))
       end
 
-      def draw_content(content, start = 2)
-        @window.setpos(@row += 1, start)
+      def draw_row(content)
+        @window.setpos(@row += 1, 0)
         @window.addstr(content)
       end
 
