@@ -1,8 +1,8 @@
 require 'coreaudio'
 
-require 'audio_player/download_thread'
-require 'audio_player/audio_buffer'
-require 'audio_player/play_thread'
+require_relative 'download_thread'
+require_relative 'audio_buffer'
+require_relative 'play_thread'
 
 module AudioPlayer
   class Player

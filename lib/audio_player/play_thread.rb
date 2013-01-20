@@ -13,9 +13,6 @@ module AudioPlayer
 
           loop do
             if @position < @audio_buffer.size
-              Curses.clear
-              Curses.setpos(20, 20)
-              Curses.addstr @position.to_s
               @output_buffer << @audio_buffer[@position]
               @position += 1
             end

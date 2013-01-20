@@ -1,17 +1,17 @@
 require_relative 'ui/canvas'
 require_relative 'ui/input'
 require_relative 'controllers/track_controller'
-# require_relative 'controllers/player_controller'
+require_relative 'controllers/player_controller'
 
 module Soundcloud2000
   class Application
 
     def initialize(client)
       @canvas = UI::Canvas.new
-      # @player_controller = Views::PlayerView.new
+      @player_controller = Controllers::PlayerController.new(client, 10, Curses.cols, 0, 0)
       @track_controller = Controllers::TrackController.new(client, 10)
       @track_controller.events.on(:select) do |track|
-        # @player_controller.play(track)
+        @player_controller.play(track)
       end
     end
 
