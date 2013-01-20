@@ -11,7 +11,7 @@ module Soundcloud2000
       INTERSECTION = ?+
 
       attr_reader :height, :width, :x, :y
-      attr_reader :window, :events
+      attr_reader :window, :events, :window
 
       def initialize(height = Curses.lines, width = Curses.cols, x = 0, y = 0)
         @height, @width, @x, @y = height - x, width - y, x, y

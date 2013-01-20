@@ -2,21 +2,26 @@ require 'coreaudio'
 
 module AudioPlayer
   class AudioBuffer
-    def initialize(file_path)
+    def initialize(logger, file_path)
+      @logger = logger
       @file = CoreAudio::AudioFile.new(file_path, :read)
       @frames = []
     end
 
+    def log(s)
+      @logger.debug("AudioBuffer #{s}")
+    end
+
     def read
       Thread.start do
+        log :thread_start
         begin
           while buf = @file.read(1024)
             @frames << buf
+            log "frames = #{@frames.size}"
           end
         rescue => e
-          p self
-          p e
-          puts e.backtrace
+          log e.message
         end
       end
 

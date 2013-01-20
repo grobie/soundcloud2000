@@ -1,3 +1,5 @@
+require 'logger'
+
 require_relative 'ui/canvas'
 require_relative 'ui/input'
 require_relative 'controllers/track_controller'
@@ -7,8 +9,9 @@ module Soundcloud2000
   class Application
 
     def initialize(client)
+      @logger = Logger.new('debug.log')
       @canvas = UI::Canvas.new
-      @player_controller = Controllers::PlayerController.new(client, 10, Curses.cols, 0, 0)
+      @player_controller = Controllers::PlayerController.new(@logger, client, 10, Curses.cols, 0, 0)
       @track_controller = Controllers::TrackController.new(client, 10)
       @track_controller.events.on(:select) do |track|
         @player_controller.play(track)
@@ -27,6 +30,8 @@ module Soundcloud2000
     # TODO: look at active panel and send key to active panel instead
     def handle(key)
       case key
+      when :left, :right, :space
+        @player_controller.events.trigger(:key, key)
       when :down, :up, :enter
         # HACK. Register views and use focus instead
         @track_controller.table.events.trigger(:key, key)

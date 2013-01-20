@@ -8,23 +8,24 @@ module AudioPlayer
   class Player
     attr_reader :playing
 
-    def initialize(audio_folder = "~/.audio_player")
+    def initialize(logger, audio_folder = "~/.audio_player")
+      @logger = logger
       @audio_folder = File.expand_path(audio_folder)
       @output_device = CoreAudio.default_output_device
-      @output_buffer = @output_device.output_buffer(1024)
       @playing = false
 
       Dir.mkdir(@audio_folder) unless File.exist?(@audio_folder)
     end
 
-    def load(url, id)
+    def load(url, id, &block)
       @play_thread.kill if @play_thread
 
       filename = "#{@audio_folder}/#{id}"
-      DownloadThread.new(url, filename).start unless File.exist?(filename)
-      audio_buffer = AudioBuffer.new(filename).read
+      DownloadThread.new(@logger, url, filename).start unless File.exist?(filename)
+      audio_buffer = AudioBuffer.new(@logger, filename).read
+      output_buffer = @output_device.output_buffer(1024)
 
-      @play_thread = PlayThread.new(@output_buffer, audio_buffer)
+      @play_thread = PlayThread.new(@logger, output_buffer, audio_buffer, block)
     end
 
     def rewind
