@@ -3,13 +3,14 @@ require 'net/http'
 
 module Soundcloud2000
   class Client
+    DEFAULT_LIMIT = 50
 
     def initialize(client_id)
       @client = Soundcloud.new(client_id: client_id)
     end
 
-    def tracks(page = 1, limit = 10)
-      @client.get('/users/183/tracks', offset: (page - 1) * limit, limit: limit)
+    def tracks(page = 1, limit = DEFAULT_LIMIT)
+      @client.get('/users/430558/tracks', offset: (page - 1) * limit, limit: limit)
     end
 
     def get(*args)

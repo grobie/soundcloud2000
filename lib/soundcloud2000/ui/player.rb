@@ -18,7 +18,8 @@ module Soundcloud2000
 
       def draw
         line '#' * (@player.play_progress * body_width).ceil
-        line duration.ljust(10) + @player.title + track_info
+        line duration.ljust(10) + @player.title
+        line track_info
       end
 
       def track
@@ -26,7 +27,7 @@ module Soundcloud2000
       end
 
       def track_info
-        "        #{track.playback_count} plays | #{track.favoritings_count} likes | #{track.comment_count} | #{track.genre} | #{track.permalink_url}"
+        "#{track.playback_count} Plays | #{track.favoritings_count} Likes | #{track.comment_count} Comments | #{track.permalink_url}"
       end
 
       def duration

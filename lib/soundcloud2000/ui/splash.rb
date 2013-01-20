@@ -29,18 +29,36 @@ module Soundcloud2000
  / __|/ _ \| | | | '_ \ / _` |/ __| |/ _ \| | | |/ _` | / /| | | | | | | | | |
  \__ \ (_) | |_| | | | | (_| | (__| | (_) | |_| | (_| |/ /_| |_| | |_| | |_| |
  |___/\___/ \__,_|_| |_|\__,_|\___|_|\___/ \__,_|\__,_|____|\___/ \___/ \___/
+
+                       Matthias Georgi and Tobias Schmidt
+                         Music Hack Day Stockholm 2013
 }
 
     protected
 
+      def left
+        (width - lines.map(&:length).max) / 2
+      end
+
+      def top
+        (height - lines.size) / 2
+      end
+
+      def lines
+        CONTENT.split("\n")
+      end
+
       def draw
-        CONTENT.split("\n").each do |row|
-          line row
+        0.upto(top) { line '' }
+        lines.each do |row|
+          line ' ' * left + row
         end
       end
 
       def refresh
         super
+
+        # show until any keypress
         @window.getch
       end
 
