@@ -8,15 +8,15 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
-    <title>Soundcloud2000 by grobie</title>
+    <title>soundcloud2000</title>
   </head>
 
   <body>
 
     <header>
       <div class="container">
-        <h1>SoundCloud2000</h1>
-        <h2>SoundCloud without the stupid css files</h2>
+        <h1>soundcloud2000</h1>
+        <h2>SoundCloud without the stupid CSS files</h2>
 
         <section id="downloads">
           <a href="https://github.com/grobie/soundcloud2000/zipball/master" class="btn">Download as .zip</a>
@@ -28,28 +28,31 @@
 
     <div class="container">
       <section id="main_content">
+        <p>
+          soundcloud2000 is terminal client for the SoundCloud platform. Currently runs only on OSX using CoreAudio and NCurses.
+          This hack was built during the [Music Hack Day Stockholm 2013](http://stockholm.musichackday.org/2013).
+        </p>
       
-      SoundCloud2000 is terminal client for the SoundCloud platform.
-      Currently runs only on OSX using CoreAudio and NCurses.
-      
-<p>
-  <img src="https://f.cloud.github.com/assets/3432/81282/06c44c7e-630f-11e2-9a91-85c9b917835c.png" alt="Screen Shot 2013-01-20 at 15 23 52">
-  <img src="https://f.cloud.github.com/assets/3432/81281/06b05df4-630f-11e2-8b55-7f3c18126831.png" alt="Screen Shot 2013-01-20 at 15 24 20">
-</p>
+        <p>
+          <img src="https://f.cloud.github.com/assets/3432/81282/06c44c7e-630f-11e2-9a91-85c9b917835c.png" alt="Screen Shot 2013-01-20 at 15 23 52">
+          <img src="https://f.cloud.github.com/assets/3432/81281/06b05df4-630f-11e2-8b55-7f3c18126831.png" alt="Screen Shot 2013-01-20 at 15 24 20">
+        </p>
 
-<h2>Development</h2>
+        <h2>Development</h2>
 
-<pre><code>bundle install
-gem install vendor/coreaudio-0.0.10.gem
-bin/soundcloud2000
-</code></pre>
+        <pre><code>
+          brew install fftw
+          bundle install
+          gem install vendor/coreaudio-0.0.10.gem
+          bin/soundcloud2000
+        </code></pre>
 
-<h2>Authors</h2>
+        <h2>Authors</h2>
 
-<ul>
-<li>Matthias Georgi (<a href="https://github.com/georgi" class="user-mention">@georgi</a>)</li>
-<li>Tobias Schmidt (<a href="https://github.com/grobie" class="user-mention">@grobie</a>)</li>
-</ul>
+        <ul>
+          <li>Matthias Georgi (<a href="https://github.com/georgi" class="user-mention">@georgi</a>)</li>
+          <li>Tobias Schmidt (<a href="https://github.com/grobie" class="user-mention">@grobie</a>)</li>
+        </ul>
       </section>
     </div>
 
