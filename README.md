@@ -2,34 +2,8 @@
 
 The next generation SoundCloud client. Without all these stupid CSS files.
 
-                                                              ohmmNNmmdyoo.                          
-                                                             dhMMMMMMMMMMMMMMMms-                    
-                                                        :m  .MMMMMMMMMMMMMMMMMMMMd-                  
-                                           .o`d:  o++./dMy  .MMMMMMMMMMMMMMMMMMMMMMd-                
-                                         /y/M.Mo  MmdhMoMy  -MMMMMMMMMMMMMMMMMMMMMMMN-               
-                                      .  +N+M-Ms  MNddMoMh /:MMMMMMMMMMMMMMMMMMMMMMMMN-              
-                                     hy  yMoM:My  MMddMsMd :oMMMMMMMMMMMMMMMMMMMMMMMMMMd             
-                               _     dh  hMsM/Mh .MMdmMyMd /oMMMMMMMMMMMMMMMMMMMMMMMMMMMMMdhoo       
-                         .  m  N   h:Nm  dMyM+Md DMMdNMyMm /MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMms.  
-                        .m  M..M   NoMN  mMhMsMm dMMdMMhMN +MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMN/ 
-                      d/MM  M/MM /oMhMM /MMdMyMN MMMdMMhMN /MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM-
-                     :MsMM  MsMM +MMNMM +MMmMhMM MMMdMMdMM +MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMy
-                     /MyMM  MyMM +dMNMM dMMmMyMN dMMdMMdMM +oMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMs
-                      N+MM  M+MM \+MdMM \NMhMoMm +MMdNMyMm \/MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMm.
-                      \+-N  M-.M   MsNm  dMsM/Mh \MMdmMsMd  :MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMh. 
-                         +  N  M   m+dy  +N+M-Ms  MmdhMoMy  .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNy:   
-                                    `:-  -/.+ +.  +: -+.o-   +/+oooooooooooooooooooooooooooo+/-      
-                                                                                                     
-                                                                                                     
-                                                 _      _                 _ ___   ___   ___   ___    
-                                                | |    | |               | |__ \ / _ \ / _ \ / _ \   
-                       ___  ___  _   _ _ __   __| | ___| | ___  _   _  __| |  ) | | | | | | | | | |  
-                      / __|/ _ \| | | | '_ \ / _` |/ __| |/ _ \| | | |/ _` | / /| | | | | | | | | |  
-                      \__ \ (_) | |_| | | | | (_| | (__| | (_) | |_| | (_| |/ /_| |_| | |_| | |_| |  
-                      |___/\___/ \__,_|_| |_|\__,_|\___|_|\___/ \__,_|\__,_|____|\___/ \___/ \___/   
-                                                                                                     
-                                            Matthias Georgi and Tobias Schmidt                       
-                                              Music Hack Day Stockholm 2013                          
+![Screen Shot 2013-01-20 at 15 23 52](https://f.cloud.github.com/assets/3432/81267/4053e33e-630d-11e2-8078-3effb0266bb1.png)
+![Screen Shot 2013-01-20 at 15 24 20](https://f.cloud.github.com/assets/3432/81268/405533ce-630d-11e2-99a1-b7811b2d69ab.png)
 
 ## Development
 
