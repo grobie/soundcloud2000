@@ -2,8 +2,8 @@ require_relative '../ui/table'
 require_relative '../events'
 
 module Soundcloud2000
-  module Views
-    class TrackView
+  module Controllers
+    class TrackController
       attr_reader :table, :events
 
       def initialize(client, x = 0, y = 0)
