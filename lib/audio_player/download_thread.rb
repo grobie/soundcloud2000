@@ -31,8 +31,8 @@ module AudioPlayer
 
             res.read_body do |chunk|
               @progress += chunk.size
-              log "progress = #@progress"
               @file << chunk
+              log "finished" if @progress == @total
             end
           end
         rescue => e
@@ -40,8 +40,9 @@ module AudioPlayer
         end
       end
 
-      while @progress < 20_000 || @progress > @total / 2
-        sleep 0.1
+      loop do
+        sleep 0.01
+        break if @progress > 65536 || (@total && @progress > @total / 2)
       end
 
       self

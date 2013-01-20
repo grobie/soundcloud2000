@@ -16,12 +16,11 @@ module AudioPlayer
       @thread = Thread.start do
         begin
           log :thread_start
-          sleep 0.1 while @audio_buffer.size < 50
+          sleep 0.01 while @audio_buffer.size == 0
           log :prebuffered
 
           loop do
             if @position < @audio_buffer.size
-              log "position = #@position"
               @output_buffer << @audio_buffer[@position]
               @callback.call(@position, @audio_buffer.size)
               @position += 1
@@ -40,15 +39,15 @@ module AudioPlayer
     end
 
     def rewind
-      log :rewind
       @position -= 50
       @position = [@position, 0].max
+      log "rewind to #{@position}"
     end
 
     def forward
-      log :forward
       @position += 50
       @position = [@position, @audio_buffer.size - 1].min
+      log "forward to #{@position}"
     end
 
     def start

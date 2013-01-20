@@ -11,6 +11,7 @@ module AudioPlayer
       @logger = logger
       @audio_folder = File.expand_path(audio_folder)
       @output_device = CoreAudio.default_output_device
+      @output_buffer = @output_device.output_buffer(1024)
       @playing = false
       @position = 0
       @size = 100
@@ -20,11 +21,11 @@ module AudioPlayer
 
     def load(url, id, &block)
       @play_thread.kill if @play_thread
+      @output_buffer.stop
 
       filename = "#{@audio_folder}/#{id}"
       DownloadThread.new(@logger, url, filename).start unless File.exist?(filename)
       audio_buffer = AudioBuffer.new(@logger, filename).read
-      output_buffer = @output_device.output_buffer(1024)
 
       @play_thread = PlayThread.new(@logger, output_buffer, audio_buffer) do |position, size|
         @position = position
