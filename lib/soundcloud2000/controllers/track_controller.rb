@@ -26,7 +26,7 @@ module Soundcloud2000
 
             if @table.bottom?
               @tracks += load_tracks(@page += 1)
-              @table.body(*tracks)
+              @table.body(*rows)
             end
           end
         end
@@ -34,14 +34,21 @@ module Soundcloud2000
 
     protected
 
-      def tracks
-        @tracks.map { |track| [ track.title, track.user.username, TimeHelper.duration(track.duration) ] }
+      def rows
+        @tracks.map do |track|
+          [
+            track.title,
+            track.user.username,
+            TimeHelper.duration(track.duration),
+            track.favoritings_count.to_s
+          ]
+        end
       end
 
       def initialize_table(x, y)
         table = UI::Table.new(Curses.lines, Curses.cols, x, y)
-        table.header 'Title', 'User', 'Length'
-        table.body *tracks
+        table.header 'Title', 'User', 'Length', 'Liked'
+        table.body(*rows)
 
         table
       end
