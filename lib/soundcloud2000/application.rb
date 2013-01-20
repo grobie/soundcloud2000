@@ -1,14 +1,18 @@
 require_relative 'ui/canvas'
 require_relative 'ui/input'
 require_relative 'views/track_view'
+# require_relative 'views/player_view'
 
 module Soundcloud2000
   class Application
 
     def initialize(client)
       @canvas = UI::Canvas.new
+      # @player_view = Views::PlayerView.new
       @track_view = Views::TrackView.new(client)
-      @canvas.add @track_view
+      @track_view.events.on(:select) do |track|
+
+      end
     end
 
     def run
@@ -23,8 +27,9 @@ module Soundcloud2000
     # TODO: look at active panel and send key to active panel instead
     def handle(key)
       case key
-      when :down, :up
-        @track_view.send(key)
+      when :down, :up, :enter
+        # HACK
+        @track_view.table.events.trigger(:key, key)
       end
     end
 

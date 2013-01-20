@@ -10,20 +10,7 @@ module Soundcloud2000
         Curses.noecho # do not show typed keys
         Curses.stdscr.keypad(true) # enable arrow keys
         Curses.init_screen
-
         Color.init
-
-        @children = []
-      end
-
-      def add(child)
-        @children << child
-      end
-
-      def draw
-        @children.each do |child|
-          child.draw if child.dirty?
-        end
       end
 
       def close

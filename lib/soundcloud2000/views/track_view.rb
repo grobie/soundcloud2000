@@ -1,28 +1,29 @@
 require_relative '../ui/table'
+require_relative '../events'
 
 module Soundcloud2000
   module Views
     class TrackView
+      attr_reader :table, :events
 
       def initialize(client, x = 0, y = 0)
+        @events = Events.new
         @page = 1
         @client = client
         @tracks = load_tracks(@page)
 
         @table = initialize_table(x, y)
-      end
-
-      def down
-        unless @table.down
-          @tracks += load_tracks(@page += 1)
-          @table.body *tracks
-
-          @table.down
+        @table.events.on(:key) do |key|
+          case key
+          when :enter
+            @events.trigger(:select, @tracks[@table.current])
+          when :down
+            if @table.current + 1 >= @table.length
+              @tracks += load_tracks(@page += 1)
+              @table.body(*tracks)
+            end
+          end
         end
-      end
-
-      def up
-        @table.up
       end
 
       def tracks

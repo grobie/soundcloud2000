@@ -5,12 +5,21 @@ module Soundcloud2000
     class Table < Widget
       PADDING = 1
 
+      attr_reader :current
+
       def initialize(*args)
         super
 
         @sizes = []
         @rows = []
         @current = 0
+
+        events.on(:key) do |key|
+          case key
+          when :up then up
+          when :down then down
+          end
+        end
 
         reset
       end
@@ -37,8 +46,12 @@ module Soundcloud2000
         end
       end
 
+      def length
+        @rows.size
+      end
+
       def down
-        if (@current + 1) < @rows.size
+        if (@current + 1) < length
           @current += 1
           draw
 
