@@ -21,8 +21,6 @@ module AudioPlayer
 
     def load(url, id, &block)
       @play_thread.kill if @play_thread
-      @audio_buffer.close if @audio_buffer
-      @output_buffer.stop
 
       filename = "#{@audio_folder}/#{id}"
       DownloadThread.new(@logger, url, filename).start unless File.exist?(filename)

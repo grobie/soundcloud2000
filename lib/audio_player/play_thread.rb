@@ -15,17 +15,20 @@ module AudioPlayer
     def start_thread!
       @thread = Thread.start do
         begin
+          @running = true
           log :thread_start
           sleep 0.1 while @audio_buffer.size == 0
           log :playing
 
-          loop do
+          while @running
             if @position < @audio_buffer.size
               @output_buffer << @audio_buffer[@position]
               @callback.call(@position, @audio_buffer.size)
               @position += 1
             end
           end
+
+          log :stopped_running
         rescue => e
           log e.message
         end
@@ -34,8 +37,9 @@ module AudioPlayer
 
     def kill
       log :kill
-      @stop
       @thread.kill if @thread
+      @audio_buffer.close
+      @output_buffer.stop
     end
 
     def rewind
