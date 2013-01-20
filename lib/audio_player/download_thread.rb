@@ -42,7 +42,7 @@ module AudioPlayer
 
       loop do
         sleep 0.01
-        break if @progress > 65536 || (@total && @progress > @total / 2)
+        break if @progress > 1_000_000 || (@total && @progress > @total / 2)
       end
 
       self
