@@ -16,8 +16,8 @@ module AudioPlayer
       @thread = Thread.start do
         begin
           log :thread_start
-          sleep 0.01 while @audio_buffer.size == 0
-          log :prebuffered
+          sleep 0.1 while @audio_buffer.size == 0
+          log :playing
 
           loop do
             if @position < @audio_buffer.size

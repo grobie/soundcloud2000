@@ -9,7 +9,7 @@ module Soundcloud2000
     end
 
     def tracks(page = 1, limit = 10)
-      @client.get('/tracks', offset: (page - 1) * limit, limit: limit)
+      @client.get('/users/183/tracks', offset: (page - 1) * limit, limit: limit)
     end
 
     def get(*args)

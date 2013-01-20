@@ -13,6 +13,10 @@ module AudioPlayer
       @logger.debug("AudioBuffer #{s}")
     end
 
+    def close
+      @file.close
+    end
+
     def downloaded_slices
       File.size(@file_path) / 1024
     end
@@ -22,7 +26,7 @@ module AudioPlayer
         log :thread_start
         begin
           loop do
-            sleep 0.01 while downloaded_slices < @slices.size
+            sleep 0.1 while downloaded_slices < @slices.size
 
             if buf = @file.read(1024)
               @slices << buf

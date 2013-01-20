@@ -21,13 +21,14 @@ module AudioPlayer
 
     def load(url, id, &block)
       @play_thread.kill if @play_thread
+      @audio_buffer.close if @audio_buffer
       @output_buffer.stop
 
       filename = "#{@audio_folder}/#{id}"
       DownloadThread.new(@logger, url, filename).start unless File.exist?(filename)
-      audio_buffer = AudioBuffer.new(@logger, filename).read
+      @audio_buffer = AudioBuffer.new(@logger, filename).read
 
-      @play_thread = PlayThread.new(@logger, output_buffer, audio_buffer) do |position, size|
+      @play_thread = PlayThread.new(@logger, @output_buffer, @audio_buffer) do |position, size|
         @position = position
         @size = size
         block.call(self)
