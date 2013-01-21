@@ -15,12 +15,13 @@ There are currently some issues with filling the play buffer while still downloa
   * scroll through sound lists (`down` / `up`)
   * play / pause support (`space`)
   * forward / rewind support (`right` / `left`)
+  * play tracks of different users (`u`)
   * basic spectrum analyzer
 
 ## Planned
 
   * no more hardcoded four-tet profile, play any streams, sets or sounds
-  * browsing between users and sound lists
+  * better browsing between users and sound lists
   * fix playback glitches during file download
   * Linux support
 
@@ -34,3 +35,7 @@ There are currently some issues with filling the play buffer while still downloa
 
   * [Matthias Georgi](https://github.com/georgi) ([@mgeorgi](https://twitter.com/mgeorgi))
   * [Tobias Schmidt](https://github.com/grobie) ([@dagrobie](https://twitter.com/dagrobie))
+
+## Contributors
+
+ *  [Travis Thieman](https://github.com/tthieman) ([@tthieman](https://twitter.com/thieman))
