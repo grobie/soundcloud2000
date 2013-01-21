@@ -34,8 +34,8 @@ module Soundcloud2000
             new_user = UI::Input.getstr
             result = @client.tracks_by_username(new_user)
             if result != nil
-              @tracks = @client.tracks_by_username(new_user)
-              @table = initialize_table(x, y)
+              @tracks = result
+              @table.body(*rows)
             end
           end
         end

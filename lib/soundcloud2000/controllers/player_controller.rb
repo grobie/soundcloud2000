@@ -23,9 +23,6 @@ module Soundcloud2000
           when :space
             @player.toggle
             @view.render
-          when :u
-            new_user = UI::Input.getstr
-            @client.tracks_by_username(new_user)
           end
         end
       end
