@@ -30,11 +30,6 @@ module Soundcloud2000
           @track_controller.render
         end
 
-        unless @workaround_was_called_once_already
-          @workaround_was_called_once_already = true
-          @track_controller.render
-        end
-
         break if stop?
       end
     ensure
