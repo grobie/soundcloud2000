@@ -7,6 +7,8 @@ The next generation SoundCloud client. Without all these stupid CSS files.
 
 This hack was built at the [Music Hack Day Stockholm 2013](http://stockholm.musichackday.org/2013).
 
+There are currently some issues with filling the play buffer while still downloading the mp3 file.
+
 ## Features
 
   * stream SoundCloud tracks in your terminal (`enter`)
@@ -26,7 +28,6 @@ This hack was built at the [Music Hack Day Stockholm 2013](http://stockholm.musi
 
     brew install fftw
     bundle install
-    gem install vendor/coreaudio-0.0.10.gem
     bin/soundcloud2000
 
 ## Authors

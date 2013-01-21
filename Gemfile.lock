@@ -1,6 +1,8 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    coreaudio (0.0.9)
+      narray (~> 0.6.0.0)
     fftw3 (0.3)
       narray
     hashie (1.2.0)
@@ -23,5 +25,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  coreaudio
   fftw3
   soundcloud
