@@ -22,7 +22,11 @@ module Soundcloud2000
 
     def main
       loop do
-        handle UI::Input.get(-1)
+        if @workaround_was_caled_once_already
+          handle UI::Input.get(100)
+        else
+          handle UI::Input.get(-1)
+        end
 
         unless @workaround_was_called_once_already
           @workaround_was_called_once_already = true
