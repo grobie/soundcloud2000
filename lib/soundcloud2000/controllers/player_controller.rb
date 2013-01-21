@@ -21,8 +21,10 @@ module Soundcloud2000
           when :left then  @player.rewind
           when :right then @player.forward
           when :space
-            @player.toggle
-            @view.render
+            if @player.track
+              @player.toggle
+              @view.render
+            end
           end
         end
       end
