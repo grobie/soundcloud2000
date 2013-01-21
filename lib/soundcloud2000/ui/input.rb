@@ -20,7 +20,12 @@ module Soundcloud2000
       end
 
       def self.getstr()
-        Curses.getstr
+        Curses.setpos(Curses.lines - 1, 0)
+        Curses.addstr('Change to Soundcloud user: ')
+        Curses.echo
+        result = Curses.getstr
+        Curses.noecho
+        result
       end
 
     end
