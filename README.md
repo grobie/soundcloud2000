@@ -9,6 +9,12 @@ This hack was built at the [Music Hack Day Stockholm 2013](http://stockholm.musi
 
 There are currently some issues with filling the play buffer while still downloading the mp3 file.
 
+## Requirements
+ 
+  * ruby 1.9
+  * Core Audio (only available on OSX and iOS)
+  * FFTW
+
 ## Installation
 
     brew install fftw
