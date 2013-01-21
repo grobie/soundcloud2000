@@ -33,7 +33,9 @@ module Soundcloud2000
           when :u
             new_user = UI::Input.getstr
             @tracks = @client.tracks_by_username(new_user)
-            @table = initialize_table(x, y)
+            if @tracks != nil
+              @table = initialize_table(x, y)
+            end
           end
         end
       end

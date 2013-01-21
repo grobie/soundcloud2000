@@ -14,10 +14,14 @@ module Soundcloud2000
     end
 
     def tracks_by_username(username, page = 1, limit = DEFAULT_LIMIT)
-      resolve_user = @client.get('/resolve', 
-                                 :url => "http://soundcloud.com/#{username}")
-      @client.get(resolve_user['uri'] + '/tracks', offset: (page - 1) * limit,
-                  limit: limit)
+      begin
+        resolve_user = @client.get('/resolve', 
+                                   :url => "http://soundcloud.com/#{username}")
+        @client.get(resolve_user['uri'] + '/tracks', offset: (page - 1) * limit,
+                    limit: limit)
+      rescue Soundcloud::ResponseError
+        nil
+      end
     end
 
     def get(*args)
