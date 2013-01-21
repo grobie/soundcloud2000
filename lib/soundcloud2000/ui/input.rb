@@ -10,12 +10,17 @@ module Soundcloud2000
         Curses::KEY_UP     => :up,
         Curses::KEY_CTRL_J => :enter,
         Curses::KEY_ENTER  => :enter,
-        ' '                => :space
+        ' '                => :space,
+        'u'                => :u
       }
 
       def self.get(delay = 0)
         Curses.timeout = delay
         MAPPING[Curses.getch]
+      end
+
+      def self.getstr()
+        Curses.getstr
       end
 
     end

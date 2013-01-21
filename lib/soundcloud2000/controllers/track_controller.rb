@@ -1,6 +1,7 @@
 require_relative 'controller'
 require_relative '../time_helper'
 require_relative '../ui/table'
+require_relative '../ui/input'
 
 module Soundcloud2000
   module Controllers
@@ -29,6 +30,10 @@ module Soundcloud2000
               @tracks += load_tracks(@page += 1)
               @table.body(*rows)
             end
+          when :u
+            new_user = UI::Input.getstr
+            @tracks = @client.tracks_by_username(new_user)
+            @table = initialize_table(x, y)
           end
         end
       end

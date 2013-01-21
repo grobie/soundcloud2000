@@ -22,7 +22,7 @@ module Soundcloud2000
 
     def main
       loop do
-        handle UI::Input.get(100)
+        handle UI::Input.get(-1)
 
         unless @workaround_was_called_once_already
           @workaround_was_called_once_already = true
@@ -45,7 +45,7 @@ module Soundcloud2000
       case key
       when :left, :right, :space
         @player_controller.events.trigger(:key, key)
-      when :down, :up, :enter
+      when :down, :up, :enter, :u
         @track_controller.events.trigger(:key, key)
       end
     end
