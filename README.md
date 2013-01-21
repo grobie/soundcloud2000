@@ -9,6 +9,12 @@ This hack was built at the [Music Hack Day Stockholm 2013](http://stockholm.musi
 
 There are currently some issues with filling the play buffer while still downloading the mp3 file.
 
+## Installation
+
+    brew install fftw
+    bundle install
+    bin/soundcloud2000
+
 ## Features
 
   * stream SoundCloud tracks in your terminal (`enter`)
@@ -23,12 +29,6 @@ There are currently some issues with filling the play buffer while still downloa
   * browsing between users and sound lists
   * fix playback glitches during file download
   * Linux support
-
-## Development
-
-    brew install fftw
-    bundle install
-    bin/soundcloud2000
 
 ## Authors
 
