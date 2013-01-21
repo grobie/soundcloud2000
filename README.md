@@ -34,3 +34,7 @@ There are currently some issues with filling the play buffer while still downloa
 
   * [Matthias Georgi](https://github.com/georgi) ([@mgeorgi](https://twitter.com/mgeorgi))
   * [Tobias Schmidt](https://github.com/grobie) ([@dagrobie](https://twitter.com/dagrobie))
+
+## Contributors
+
+ *  [Travis Thieman](https://github.com/tthieman) ([@tthieman](https://twitter.com/thieman))
