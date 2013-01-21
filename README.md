@@ -30,5 +30,5 @@ This hack was built at the [Music Hack Day Stockholm 2013](http://stockholm.musi
 
 ## Authors
 
-  * [Matthias Georgi (@georgi)](https://github.com/georgi)
-  * [Tobias Schmidt (@grobie)](https://github.com/grobie)
+  * [Matthias Georgi](https://github.com/georgi) ([@mgeorgi](https://twitter.com/mgeorgi))
+  * [Tobias Schmidt](https://github.com/grobie) ([@dagrobie](https://twitter.com/dagrobie))
