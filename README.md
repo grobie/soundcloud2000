@@ -20,6 +20,7 @@ This hack was built at the [Music Hack Day Stockholm 2013](http://stockholm.musi
   * no more hardcoded four-tet profile, play any streams, sets or sounds
   * browsing between users and sound lists
   * fix playback glitches during file download
+  * Linux support
 
 ## Development
 
