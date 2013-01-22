@@ -36,6 +36,10 @@ module Soundcloud2000
         @window.attron(Color.get(name), &block)
       end
 
+      def clear
+        @window.clear
+      end
+
     protected
 
       def line_number
