@@ -10,7 +10,8 @@ module Soundcloud2000
         Curses::KEY_UP     => :up,
         Curses::KEY_CTRL_J => :enter,
         Curses::KEY_ENTER  => :enter,
-        ' '                => :space
+        ' '                => :space,
+        's'                => :s
       }
 
       def self.get(delay = 0)

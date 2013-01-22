@@ -27,7 +27,7 @@ There are currently some issues with filling the play buffer while still downloa
   * scroll through sound lists (`down` / `up`)
   * play / pause support (`space`)
   * forward / rewind support (`right` / `left`)
-  * basic spectrum analyzer
+  * basic spectrum analyzer (`s` to toggle)
 
 ## Planned
 
