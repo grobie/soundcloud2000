@@ -35,7 +35,9 @@ module Soundcloud2000
             result = @client.tracks_by_username(new_user)
             if result != nil
               @tracks = result
+              @table.clear
               @table.body(*rows)
+              # @table = initialize_table(x, y)
             end
           end
         end
