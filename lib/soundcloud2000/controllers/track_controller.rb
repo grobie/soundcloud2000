@@ -37,7 +37,6 @@ module Soundcloud2000
               @tracks = result
               @table.clear
               @table.body(*rows)
-              # @table = initialize_table(x, y)
             end
           end
         end
