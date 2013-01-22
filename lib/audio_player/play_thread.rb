@@ -1,73 +1,82 @@
 require "fftw3"
+require 'ffi-portaudio'
 
 module AudioPlayer
   class PlayThread
-    def initialize(logger, output_buffer, audio_buffer, &callback)
+    include FFI::PortAudio
+
+    SKIP_SAMPLES = 44_100 * 2
+
+    def initialize(logger, audio_buffer, &callback)
       @logger = logger
-      @output_buffer = output_buffer
       @audio_buffer = audio_buffer
       @callback = callback
       @position = 0
+      @stream = FFI::Buffer.new(:pointer)
+    end
+
+    def stream_parameters
+      output = API::PaStreamParameters.new
+      output[:device] = API.Pa_GetDefaultOutputDevice
+      output[:suggestedLatency]= API.Pa_GetDeviceInfo(output[:device])[:defaultHighOutputLatency]
+      output[:hostApiSpecificStreamInfo] = nil
+      output[:channelCount] = 2
+      output[:sampleFormat] = API::Float32
+      output
+    end
+
+    def open_stream
+      log :open_stream
+      log API.Pa_OpenStream(
+        @stream,
+        nil,
+        stream_parameters,
+        44100,
+        2**12,
+        API::NoFlag,
+        method(:process),
+        nil)
     end
 
     def log(s)
       @logger.debug("PlayThread #{s}")
     end
 
-    def start_thread!
-      @thread = Thread.start do
-        begin
-          log :thread_start
-          sleep 0.1 while @audio_buffer.size == 0
-          log :playing
-
-          loop do
-            if @position < @audio_buffer.size
-              slice = @audio_buffer[@position]
-              @output_buffer << slice
-              fft = FFTW3.fft(slice, 1, 0) / slice.length
-              spectrum = (1..100).map {|i| fft[i * 20].abs }
-              @callback.call(@position, @audio_buffer.size, spectrum)
-              @position += 1
-            end
-          end
-
-          log :stopped_running
-        rescue => e
-          log e.message
-          log e.backtrace
-        end
-      end
+    def process(input, output, frames, time_info, status, _)
+      b = @audio_buffer.read(@position, frames * 2)
+      output.write_array_of_float(b)
+      @position += frames * 2
+      :paContinue
     end
 
-    def kill
-      log :kill
-      @thread.kill if @thread
-      @audio_buffer.close
-      @output_buffer.stop
+    def start_stream
+      log :start_stream
+      log API.Pa_StartStream(@stream.read_pointer)
     end
+
+    def start
+      open_stream
+      start_stream
+    end
+
+    def stop
+      log :stop
+    end
+
+      # fft = FFTW3.fft(slice, 1, 0) / slice.length
+      # spectrum = (1..100).map {|i| fft[i * 20].abs }
+      # @callback.call(@position, @audio_buffer.size, spectrum)
 
     def rewind
-      @position -= 50
+      @position -= SKIP_SAMPLES
       @position = [@position, 0].max
       log "rewind to #{@position}"
     end
 
     def forward
-      @position += 50
+      @position += SKIP_SAMPLES
       @position = [@position, @audio_buffer.size - 1].min
       log "forward to #{@position}"
-    end
-
-    def start
-      log :start
-      @thread ||= start_thread!
-      @output_buffer.start
-    end
-
-    def stop
-      log :stop
-      @output_buffer.stop
     end
   end
 end

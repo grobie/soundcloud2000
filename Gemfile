@@ -1,5 +1,5 @@
 source :rubygems
 
 gem 'soundcloud'
-gem 'coreaudio'
+gem 'ffi-portaudio'
 gem 'fftw3'

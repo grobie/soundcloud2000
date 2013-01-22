@@ -2,13 +2,17 @@ require 'net/http'
 
 module AudioPlayer
   class DownloadThread
-    attr_reader :url, :progress, :total
+    attr_reader :url, :total
 
-    def initialize(logger, url, filename)
+    def initialize(logger, url, &callback)
       @logger = logger
       @uri = URI.parse(url)
-      @file = File.open(filename, "w")
-      @progress = 0
+      @buffer = ""
+      @callback = callback
+    end
+
+    def progress
+      @buffer.size
     end
 
     def log(s)
@@ -30,19 +34,14 @@ module AudioPlayer
             log "content length = #@total"
 
             res.read_body do |chunk|
-              @progress += chunk.size
-              @file << chunk
-              log "finished" if @progress == @total
+              @buffer << chunk
+              @callback.call(chunk)
+              log "finished" if progress == total
             end
           end
         rescue => e
           log e.message
         end
-      end
-
-      loop do
-        sleep 0.01
-        break if @progress > 1_000_000 || (@total && @progress > @total / 2)
       end
 
       self

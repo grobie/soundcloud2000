@@ -1,37 +1,28 @@
-require 'coreaudio'
+require 'ffi-portaudio'
 
-require_relative 'download_thread'
 require_relative 'audio_buffer'
 require_relative 'play_thread'
 
 module AudioPlayer
   class Player
-    SLICE_LENGTH = 1024.0 / 44100
+    include FFI::PortAudio
 
-    def initialize(logger, audio_folder = "~/.audio_player")
+    def initialize(logger)
       @logger = logger
-      @audio_folder = File.expand_path(audio_folder)
-      @output_device = CoreAudio.default_output_device
-      @output_buffer = @output_device.output_buffer(1024)
-
+      API.Pa_Initialize
       reset
-      Dir.mkdir(@audio_folder) unless File.exist?(@audio_folder)
     end
 
     def load(url, id, &block)
       reset
-      @play_thread.kill if @play_thread
 
-      filename = "#{@audio_folder}/#{id}"
-      DownloadThread.new(@logger, url, filename).start unless File.exist?(filename)
-      @audio_buffer = AudioBuffer.new(@logger, filename).read
+      @buffer = AudioBuffer.new(@logger, url)
+      @buffer.start
 
-      @play_thread = PlayThread.new(@logger, @output_buffer, @audio_buffer) do |position, size, spectrum|
-        @position = position * SLICE_LENGTH
-        @size = size * SLICE_LENGTH
-        @spectrum = spectrum
-        block.call(self)
-      end
+      sleep 5
+
+      @play_thread = PlayThread.new(@logger, @buffer)
+      @play_thread.start
     end
 
     def spectrum
@@ -84,4 +75,13 @@ module AudioPlayer
       @size = 1/0.0
     end
   end
+end
+
+if __FILE__ == $0
+  require 'logger'
+
+  player = AudioPlayer::Player.new(Logger.new(STDOUT))
+  player.load('http://localhost:8000/01.mp3', '1')
+
+  sleep 20
 end

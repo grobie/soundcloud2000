@@ -1,12 +1,13 @@
-require 'coreaudio'
+require 'open3'
 
 module AudioPlayer
   class AudioBuffer
-    def initialize(logger, file_path)
+    attr_reader :buffer
+
+    def initialize(logger, url)
       @logger = logger
-      @file_path = file_path
-      @file = CoreAudio::AudioFile.new(file_path, :read)
-      @slices = []
+      @buffer = []
+      @url = url
     end
 
     def log(s)
@@ -14,51 +15,45 @@ module AudioPlayer
     end
 
     def close
-      @file.close
+      @io.close
     end
 
-    def self.slices_for(size)
-      (size - 52) / 372
+    def start
+      cmd = "ffmpeg -loglevel quiet -i '#{@url}' -f f32be -acodec pcm_f32be -"
+      log cmd
+      @io = IO.popen(cmd)
     end
 
-    def self.size_for(slices)
-      slices * 372 + 52
-    end
-
-    def downloaded_slices
-      self.class.slices_for(File.size(@file_path))
-    end
-
-    def read
-      Thread.start do
-        log :thread_start
-        begin
-          log downloaded_slices
-
-          loop do
-            sleep 0.1 while downloaded_slices < @slices.size
-
-            if buf = @file.read(1024)
-              @slices << buf
-            else
-              break
-            end
-          end
-          log "finished #{@slices.size} of #{downloaded_slices}"
-        rescue => e
-          log e.message
-        end
+    def read(start, length)
+      while (start + length) >= @buffer.size
+        return false if not read_from_process
       end
 
-      self
+      @buffer[start, length]
     end
 
-    def [](i)
-      @slices[i]
+    def read_from_process
+      if b = @io.read(2**12)
+        @buffer.concat(b.unpack('g*'))
+        true
+      else
+        false
+      end
     end
 
     def size
-      @slices.size
+      @buffer.size
     end
   end
+end
+
+
+if __FILE__ == $0
+  require 'logger'
+
+  buffer = AudioPlayer::AudioBuffer.new(Logger.new(STDOUT), 'http://localhost:8000/01.mp3')
+
+  buffer.start
+  sleep 5
+  p buffer.buffer
 end
