@@ -43,7 +43,7 @@ module Soundcloud2000
     # TODO: look at active controller and send key to active controller instead
     def handle(key)
       case key
-      when :left, :right, :space
+      when :left, :right, :space, :s
         @player_controller.events.trigger(:key, key)
       when :down, :up, :enter
         @track_controller.events.trigger(:key, key)

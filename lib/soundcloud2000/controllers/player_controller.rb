@@ -25,6 +25,8 @@ module Soundcloud2000
               @player.toggle
               @view.render
             end
+          when :s
+            @view.toggle_spectrum
           end
         end
       end

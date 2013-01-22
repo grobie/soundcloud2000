@@ -7,11 +7,16 @@ module Soundcloud2000
       def initialize(*attrs)
         super
 
+        @spectrum = true
         padding 2
       end
 
       def player(instance)
         @player = instance
+      end
+
+      def toggle_spectrum
+        @spectrum = !@spectrum
       end
 
     protected
@@ -38,9 +43,13 @@ module Soundcloud2000
       def spectrum
         max = 5
         @player.spectrum.map do |i|
-          x = (0...i.to_i).map { '#' }
-          x = x.slice(0, max) if x.size > max
-          (max - x.size).times { x << '' } if x.size < max
+          if @spectrum
+            x = (0...i.to_i).map { '#' }
+            x = x.slice(0, max) if x.size > max
+            (max - x.size).times { x << '' } if x.size < max
+          else
+            x = [''] * max
+          end
           x
         end
       end
