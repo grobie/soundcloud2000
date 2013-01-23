@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/audio_player/player_process'
+
+
+player = AudioPlayer::PlayerProcess.new(STDERR)
+player.read_commands_from(STDIN)

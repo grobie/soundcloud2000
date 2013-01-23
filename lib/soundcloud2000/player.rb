@@ -2,62 +2,36 @@ require_relative '../audio_player/player'
 
 module Soundcloud2000
   class Player
-    attr_reader :track
+    attr_reader :track, :events
 
     def initialize(logger)
       @logger = logger
       @track = nil
+      @events = Events.new
       @audio = AudioPlayer::Player.new(@logger)
+      @audio.events.on(:progress) do
+        events.trigger(:progress)
+      end
     end
 
-    def play(track, location, &callback)
+    def play(track, location)
       @track = track
-      @location = location
+      @audio.load(location)
+      @audio.start
 
-      @logger.warn @track.inspect
-
-      load(&callback)
+      @logger.debug @track.to_json
     end
 
-    def toggle
-      @audio.toggle
-    end
-
-    def playing?
-      @audio.playing?
-    end
-
-    def rewind
-      @audio.rewind
-    end
-
-    def forward
-      @audio.forward
+    [:toggle, :playing?, :rewind, :forward, :seconds_played, :spectrum].each do |name|
+      define_method(name) { @audio.send(name) }
     end
 
     def play_progress
-      @audio.play_progress
-    end
-
-    def seconds_played
-      @audio.seconds_played
-    end
-
-    def spectrum
-      @audio.spectrum
+      @audio.seconds_played / (@track.duration / 1000)
     end
 
     def title
       [@track.title, @track.user.username].join(' - ')
-    end
-
-  protected
-
-    def load(&callback)
-      @audio.load(@location, @track.id) do |audio|
-        yield
-      end
-      @audio.start
     end
 
   end

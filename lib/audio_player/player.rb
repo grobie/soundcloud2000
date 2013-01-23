@@ -1,28 +1,74 @@
 require 'ffi-portaudio'
+require 'json'
+require 'open3'
 
 require_relative 'audio_buffer'
-require_relative 'play_thread'
+require_relative 'events'
 
 module AudioPlayer
   class Player
     include FFI::PortAudio
 
+    attr_reader :events
+
+    PLAYER_PROCESS =
+      File.expand_path(File.dirname(__FILE__) + "/../../bin/audio_player")
+
     def initialize(logger)
       @logger = logger
-      API.Pa_Initialize
+      @events = Events.new
+      @spectrum = []
       reset
+      start_process!
     end
 
-    def load(url, id, &block)
+    def start_process!
+      @in, out, err, wait = Open3.popen3(PLAYER_PROCESS)
+
+      Thread.start { read_commands_from err }
+    end
+
+    def load(url, &block)
       reset
+      send!(:load, url)
+    end
 
-      @buffer = AudioBuffer.new(@logger, url)
-      @buffer.start
+    def send!(*args)
+      @logger.debug args.join(" ")
+      @in.puts(args.to_json)
+    end
 
-      sleep 5
+    def read_commands_from(out)
+      while line = out.gets
+        begin
+          if line[0,4] == 'JSON'
+            send(*JSON.parse(line[5..-1]))
+          else
+            @logger.debug line.chomp
+          end
+        rescue => e
+          @logger.debug e.message
+          @logger.debug e.backtrace
+        end
+      end
+    end
 
-      @play_thread = PlayThread.new(@logger, @buffer)
-      @play_thread.start
+    def read_log_from(err)
+      while line = err.gets
+        @logger.debug line.chomp
+      end
+    rescue => e
+      puts e.message
+      puts e.backtrace
+    end
+
+    def on_position_change(position)
+      @position = position.to_f / (44_100 * 2)
+      events.trigger(:progress)
+    end
+
+    def on_spectrum(spectrum)
+      @spectrum = spectrum
     end
 
     def spectrum
@@ -33,32 +79,26 @@ module AudioPlayer
       @position
     end
 
-    def play_progress
-      @position / @size
-    end
-
     def playing?
-      @play_thread && @playing == true
+      @playing == true
     end
 
     def rewind
-      @play_thread.rewind if @play_thread
+      send! :rewind
     end
 
     def forward
-      @play_thread.forward if @play_thread
+      send! :forward
     end
 
     def stop
-      @play_thread.stop if @play_thread
+      send! :stop_stream if @playing
       @playing = false
     end
 
     def start
-      if @play_thread && !playing?
-        @play_thread.start
-        @playing = true
-      end
+      send! :start_stream unless @playing
+      @playing = true
     end
 
     def toggle
@@ -71,6 +111,7 @@ module AudioPlayer
 
     def reset
       stop
+      # send! :abort_stream if @playing
       @position = 0
       @size = 1/0.0
     end
@@ -81,7 +122,8 @@ if __FILE__ == $0
   require 'logger'
 
   player = AudioPlayer::Player.new(Logger.new(STDOUT))
-  player.load('http://localhost:8000/01.mp3', '1')
+  player.load('http://localhost:8000/01.mp3')
+  player.start
 
   sleep 20
 end

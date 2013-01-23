@@ -19,13 +19,12 @@ module AudioPlayer
     end
 
     def start
-      cmd = "ffmpeg -loglevel quiet -i '#{@url}' -f f32be -acodec pcm_f32be -"
-      log cmd
-      @io = IO.popen(cmd)
+      cmd = ['ffmpeg', '-loglevel', 'quiet', '-i', @url, '-f', 'f32be', '-acodec', 'pcm_f32be', '-'];
+      @out, @in, @err, @wait = Open3.popen3(*cmd)
     end
 
     def read(start, length)
-      while (start + length) >= @buffer.size
+      while @buffer.size < (start + length)
         return false if not read_from_process
       end
 
@@ -33,7 +32,7 @@ module AudioPlayer
     end
 
     def read_from_process
-      if b = @io.read(2**12)
+      if b = @in.read(2**12)
         @buffer.concat(b.unpack('g*'))
         true
       else
