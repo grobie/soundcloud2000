@@ -19,9 +19,9 @@ module Soundcloud2000
         MAPPING[Curses.getch]
       end
 
-      def self.getstr()
+      def self.getstr(prompt)
         Curses.setpos(Curses.lines - 1, 0)
-        Curses.addstr('Change to SoundCloud user: ')
+        Curses.addstr(prompt)
         Curses.echo
         result = Curses.getstr
         Curses.noecho

@@ -31,7 +31,7 @@ module Soundcloud2000
               @table.body(*rows)
             end
           when :u
-            new_user = UI::Input.getstr
+            new_user = UI::Input.getstr('Change to SoundCloud user: ')
             result = @client.tracks_by_username(new_user)
             if result != nil
               @tracks = result
