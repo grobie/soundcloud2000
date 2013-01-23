@@ -20,7 +20,7 @@ There are currently some issues with filling the play buffer while still downloa
 
 ## Planned
 
-  * no more hardcoded four-tet profile, play any streams, sets or sounds
+  * play any streams, sets or sounds
   * better browsing between users and sound lists
   * fix playback glitches during file download
   * Linux support
