@@ -1,18 +1,13 @@
-require 'ffi-portaudio'
 require 'json'
 require 'open3'
 
-require_relative 'audio_buffer'
 require_relative 'events'
 
 module AudioPlayer
   class Player
-    include FFI::PortAudio
-
     attr_reader :events
 
-    PLAYER_PROCESS =
-      File.expand_path(File.dirname(__FILE__) + "/../../bin/audio_player")
+    AUDIO_PLAYER = File.expand_path(File.dirname(__FILE__) + "/../../bin/audio_player")
 
     def initialize(logger)
       @logger = logger
@@ -23,8 +18,9 @@ module AudioPlayer
     end
 
     def start_process!
-      @in, out, err, wait = Open3.popen3(PLAYER_PROCESS)
+      @in, out, err, wait = Open3.popen3(AUDIO_PLAYER)
 
+      # TODO for some strange reason only stderr works
       Thread.start { read_commands_from err }
     end
 
@@ -41,25 +37,11 @@ module AudioPlayer
     def read_commands_from(out)
       while line = out.gets
         begin
-          if line[0,4] == 'JSON'
-            send(*JSON.parse(line[5..-1]))
-          else
-            @logger.debug line.chomp
-          end
+          send(*JSON.parse(line))
         rescue => e
-          @logger.debug e.message
-          @logger.debug e.backtrace
+          @logger.debug line
         end
       end
-    end
-
-    def read_log_from(err)
-      while line = err.gets
-        @logger.debug line.chomp
-      end
-    rescue => e
-      puts e.message
-      puts e.backtrace
     end
 
     def on_position_change(position)
@@ -69,6 +51,10 @@ module AudioPlayer
 
     def on_spectrum(spectrum)
       @spectrum = spectrum
+    end
+
+    def on_complete
+      events.trigger(:complete)
     end
 
     def spectrum
@@ -111,9 +97,7 @@ module AudioPlayer
 
     def reset
       stop
-      # send! :abort_stream if @playing
       @position = 0
-      @size = 1/0.0
     end
   end
 end

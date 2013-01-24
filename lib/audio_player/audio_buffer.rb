@@ -4,14 +4,9 @@ module AudioPlayer
   class AudioBuffer
     attr_reader :buffer
 
-    def initialize(logger, url)
-      @logger = logger
+    def initialize(url)
       @buffer = []
       @url = url
-    end
-
-    def log(s)
-      @logger.debug("AudioBuffer #{s}")
     end
 
     def close
@@ -19,25 +14,21 @@ module AudioPlayer
     end
 
     def start
-      cmd = ['ffmpeg', '-loglevel', 'quiet', '-i', @url, '-f', 'f32be', '-acodec', 'pcm_f32be', '-'];
+      cmd = ['ffmpeg', '-ss', '', '-loglevel', 'quiet', '-i', @url, '-f', 'f32be', '-acodec', 'pcm_f32be', '-'];
       @out, @in, @err, @wait = Open3.popen3(*cmd)
     end
 
     def read(start, length)
       while @buffer.size < (start + length)
-        return false if not read_from_process
+        read_from_process!
       end
 
       @buffer[start, length]
     end
 
-    def read_from_process
-      if b = @in.read(2**12)
-        @buffer.concat(b.unpack('g*'))
-        true
-      else
-        false
-      end
+    def read_from_process!
+      buffer = @in.read(2**12 * 4)
+      @buffer.concat(buffer.unpack('g*'))
     end
 
     def size
@@ -48,11 +39,8 @@ end
 
 
 if __FILE__ == $0
-  require 'logger'
-
-  buffer = AudioPlayer::AudioBuffer.new(Logger.new(STDOUT), 'http://localhost:8000/01.mp3')
-
+  buffer = AudioPlayer::AudioBuffer.new('http://localhost:8000/01.mp3')
   buffer.start
-  sleep 5
-  p buffer.buffer
+  buffer.read(44_100 * 2 * 160, 4096)
+  puts buffer.size / (44_100 * 2)
 end

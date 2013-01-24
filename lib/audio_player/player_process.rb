@@ -30,10 +30,9 @@ module AudioPlayer
     end
 
     def open_stream
-      log :open_stream
       FFI::PortAudio::API.Pa_Initialize
       @stream = FFI::Buffer.new(:pointer)
-      log API.Pa_OpenStream(
+      API.Pa_OpenStream(
         @stream,
         nil,
         stream_parameters,
@@ -44,10 +43,6 @@ module AudioPlayer
         nil)
     end
 
-    def log(s)
-      @logger.puts s
-    end
-
     def read_commands_from(input)
       while line = input.gets
         send(*JSON.parse(line))
@@ -55,13 +50,15 @@ module AudioPlayer
     end
 
     def send!(*args)
-      #TODO switch to STDOUT
-      STDERR.puts "JSON #{args.to_json}"
+      # TODO for some reason Open3.popen3 cannot read STDOUT
+      # so use STDERR as a workaround
+      STDERR.puts args.to_json
     end
 
     def position=(position)
       @position = position
       @position = [@position, 0].max
+
       # TODO check for end of track
       # @position = [@position, @buffer.size - 1].min
 
@@ -69,38 +66,43 @@ module AudioPlayer
     end
 
     def process(input, output, frames, time_info, status, _)
-      b = @buffer.read(position, frames * 2)
-      render_spectrum(position, frames * 2)
-      output.write_array_of_float(b)
-      self.position += frames * 2
-      :paContinue
+      slice = @buffer.read(position, frames * 2)
+      # render_spectrum(position, frames * 2)
+      puts slice.size
+
+      # if slice.size == frames * 2
+        output.write_array_of_float(slice)
+        self.position += slice.size
+        :paContinue
+      # end
+
+    rescue EOFError
+      :paComplete
+      send! :on_complete
     rescue => e
       puts e.message
       puts e.backtrace
     end
 
     def start_stream
-      log :start_stream
       if API.Pa_IsStreamStopped(@stream.read_pointer)
-        log API.Pa_StartStream(@stream.read_pointer)
+        API.Pa_StartStream(@stream.read_pointer)
       end
     end
 
     def stop_stream
-      log :stop_stream
       if API.Pa_IsStreamActive(@stream.read_pointer)
-        log API.Pa_StopStream(@stream.read_pointer)
+        API.Pa_StopStream(@stream.read_pointer)
       end
     end
 
     def abort_stream
-      log :abort_stream
-      log API.Pa_AbortStream(@stream.read_pointer)
+      API.Pa_AbortStream(@stream.read_pointer)
     end
 
     def load(url)
       @position = 0
-      @buffer = AudioBuffer.new(@logger, url)
+      @buffer = AudioBuffer.new(url)
       @buffer.start
     end
 
@@ -125,6 +127,7 @@ if __FILE__ == $0
   require 'logger'
   player = AudioPlayer::PlayerProcess.new(STDERR)
   player.load("http://localhost:8000/01.mp3")
+  player.position = 44_100 * 2 * 120
   player.start_stream
   gets
 end
