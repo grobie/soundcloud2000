@@ -127,7 +127,6 @@ if __FILE__ == $0
   require 'logger'
   player = AudioPlayer::PlayerProcess.new(STDERR)
   player.load("http://localhost:8000/01.mp3")
-  player.position = 44_100 * 2 * 120
   player.start_stream
   gets
 end

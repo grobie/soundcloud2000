@@ -14,7 +14,7 @@ module AudioPlayer
     end
 
     def start
-      cmd = ['ffmpeg', '-ss', '', '-loglevel', 'quiet', '-i', @url, '-f', 'f32be', '-acodec', 'pcm_f32be', '-'];
+      cmd = ['ffmpeg', '-loglevel', 'quiet', '-i', @url, '-f', 'f32be', '-acodec', 'pcm_f32be', '-'];
       @out, @in, @err, @wait = Open3.popen3(*cmd)
     end
 
