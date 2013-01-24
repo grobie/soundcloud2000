@@ -67,14 +67,14 @@ module AudioPlayer
 
     def process(input, output, frames, time_info, status, _)
       slice = @buffer.read(position, frames * 2)
-      # render_spectrum(position, frames * 2)
+      render_spectrum(position, frames * 2)
       puts slice.size
 
-      # if slice.size == frames * 2
+      if slice.size == frames * 2
         output.write_array_of_float(slice)
         self.position += slice.size
         :paContinue
-      # end
+      end
 
     rescue EOFError
       :paComplete
