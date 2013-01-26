@@ -1,4 +1,6 @@
 .DS_Store
 *~
 *.log
-
+Makefile
+*.o
+*.bundle
