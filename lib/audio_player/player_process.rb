@@ -1,21 +1,18 @@
 require 'fftw3'
 require 'ffi-portaudio'
 require 'json'
-
-require_relative 'audio_buffer'
+require_relative '../../ext/mpg123'
 
 module AudioPlayer
   class PlayerProcess
     include FFI::PortAudio
 
-    SKIP_SAMPLES = 44_100 * 2
+    SKIP_SECONDS = 1
 
     attr_reader :position
 
-    def initialize(logger, &callback)
+    def initialize(logger)
       @logger = logger
-      @callback = callback
-      @position = 0
       open_stream
     end
 
@@ -30,8 +27,11 @@ module AudioPlayer
     end
 
     def open_stream
+      Mpg123.init
       FFI::PortAudio::API.Pa_Initialize
+
       @stream = FFI::Buffer.new(:pointer)
+
       API.Pa_OpenStream(
         @stream,
         nil,
@@ -55,78 +55,118 @@ module AudioPlayer
       STDERR.puts args.to_json
     end
 
-    def position=(position)
-      @position = position
-      @position = [@position, 0].max
-
-      # TODO check for end of track
-      # @position = [@position, @buffer.size - 1].min
-
-      send! :on_position_change, @position
+    def load(file)
+      @mp3 = Mpg123.new(file)
     end
 
-    def process(input, output, frames, time_info, status, _)
-      slice = @buffer.read(position, frames * 2)
-      render_spectrum(position, frames * 2)
-      puts slice.size
+    def time_per_frame
+      @mp3.tpf
+    end
 
-      if slice.size == frames * 2
+    def samples_per_frame
+      @mp3.spf
+    end
+
+    def tell
+      @mp3.tell
+    end
+
+    def length
+      @mp3.length
+    end
+
+    def read(samples)
+      @mp3.read(samples)
+    end
+
+    def seconds_to_frames(seconds)
+      seconds / time_per_frame
+    end
+
+    def seconds_to_samples(seconds)
+      seconds_to_frames(seconds) * samples_per_frame
+    end
+
+    def samples_to_seconds(samples)
+      samples_to_frames(samples) * time_per_frame
+    end
+
+    def samples_to_frames(samples)
+      samples / samples_per_frame
+    end
+
+    def seek(seconds)
+      samples = seconds_to_samples(seconds)
+
+      if (0..length).include?(samples)
+        @mp3.seek(samples)
+        send! :on_position_change, position
+      end
+    end
+
+    def position
+      samples_to_seconds(tell)
+    end
+
+    def process(input, output, samples, time_info, status, _)
+      if tell == length
+        output.write_array_of_float((0..samples).map { 0 })
+        send! :on_complete
+      elsif slice = read(samples * 2)
+        send! :on_level, level(slice)
+        send! :on_position_change, position
+
         output.write_array_of_float(slice)
-        self.position += slice.size
-        :paContinue
+      else
+        output.write_array_of_float((0..samples).map { 0 })
       end
 
-    rescue EOFError
-      :paComplete
-      send! :on_complete
+      :paContinue
     rescue => e
       puts e.message
       puts e.backtrace
     end
 
     def start_stream
-      if API.Pa_IsStreamStopped(@stream.read_pointer)
+      unless @active
+        @active = true
         API.Pa_StartStream(@stream.read_pointer)
       end
     end
 
     def stop_stream
-      if API.Pa_IsStreamActive(@stream.read_pointer)
+      if @active
+        @active = false
         API.Pa_StopStream(@stream.read_pointer)
       end
     end
 
-    def abort_stream
-      API.Pa_AbortStream(@stream.read_pointer)
-    end
-
-    def load(url)
-      @position = 0
-      @buffer = AudioBuffer.new(url)
-      @buffer.start
-    end
-
-    def render_spectrum(pos, length)
-      slice = NArray.to_na(@buffer.read(pos, length))
-      fft = FFTW3.fft(slice, -1)
-      spectrum = (1..80).map {|i| fft[i * 20].abs }
-      send! :on_spectrum, spectrum
+    def level(slice)
+      slice.inject(0) {|s, i| s + i.abs } / slice.size
     end
 
     def rewind
-      self.position -= SKIP_SAMPLES
+      if @mp3
+        start_stream
+        seek(position - SKIP_SECONDS)
+      end
     end
 
     def forward
-      self.position += SKIP_SAMPLES
+      if @mp3
+        start_stream
+        seek(position + SKIP_SECONDS)
+      end
     end
   end
 end
 
 if __FILE__ == $0
   require 'logger'
+  filename = "/Users/soundcloud/01.mp3"
   player = AudioPlayer::PlayerProcess.new(STDERR)
-  player.load("http://localhost:8000/01.mp3")
+  player.load(filename)
   player.start_stream
+  player.seek(170)
   gets
 end

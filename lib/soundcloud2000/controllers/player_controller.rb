@@ -12,8 +12,13 @@ module Soundcloud2000
         @logger = logger
         @client = client
         @player = Player.new(@logger)
+
         @player.events.on(:progress) do
           @view.render
+        end
+
+        @player.events.on(:complete) do
+          events.trigger(:complete)
         end
 
         @view = UI::Player.new(h, w, x, y)

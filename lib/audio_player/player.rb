@@ -2,6 +2,7 @@ require 'json'
 require 'open3'
 
 require_relative 'events'
+require_relative 'download_thread'
 
 module AudioPlayer
   class Player
@@ -13,6 +14,8 @@ module AudioPlayer
       @logger = logger
       @events = Events.new
       @spectrum = []
+      @folder = File.expand_path("~/.soundcloud2000")
+      Dir.mkdir(@folder) unless File.exist?(@folder)
       reset
       start_process!
     end
@@ -24,9 +27,14 @@ module AudioPlayer
       Thread.start { read_commands_from err }
     end
 
-    def load(url, &block)
+    def load(track, location, &block)
       reset
-      send!(:load, url)
+
+      filename = "#{@folder}/#{track.id}.mp3"
+
+      DownloadThread.new(@logger, location, filename) unless File.exist?(filename)
+
+      send!(:load, filename)
     end
 
     def send!(*args)
@@ -45,20 +53,20 @@ module AudioPlayer
     end
 
     def on_position_change(position)
-      @position = position.to_f / (44_100 * 2)
+      @position = position
       events.trigger(:progress)
     end
 
-    def on_spectrum(spectrum)
-      @spectrum = spectrum
+    def on_level(level)
+      @level = level
     end
 
     def on_complete
       events.trigger(:complete)
     end
 
-    def spectrum
-      @spectrum
+    def level
+      @level
     end
 
     def seconds_played
@@ -100,14 +108,4 @@ module AudioPlayer
       @position = 0
     end
   end
-end
-
-if __FILE__ == $0
-  require 'logger'
-
-  player = AudioPlayer::Player.new(Logger.new(STDOUT))
-  player.load('http://localhost:8000/01.mp3')
-  player.start
-
-  sleep 20
 end

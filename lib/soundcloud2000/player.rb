@@ -9,20 +9,25 @@ module Soundcloud2000
       @track = nil
       @events = Events.new
       @audio = AudioPlayer::Player.new(@logger)
+
       @audio.events.on(:progress) do
         events.trigger(:progress)
+      end
+
+      @audio.events.on(:complete) do
+        events.trigger(:complete)
       end
     end
 
     def play(track, location)
       @track = track
-      @audio.load(location)
+      @audio.load(track, location)
       @audio.start
 
       @logger.debug @track.to_json
     end
 
-    [:toggle, :playing?, :rewind, :forward, :seconds_played, :spectrum].each do |name|
+    [:toggle, :playing?, :rewind, :forward, :seconds_played, :level].each do |name|
       define_method(name) { @audio.send(name) }
     end
 
