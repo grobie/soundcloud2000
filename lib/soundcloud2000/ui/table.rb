@@ -74,6 +74,7 @@ module Soundcloud2000
       end
 
       def calculate_widths
+        @sizes = []
         (@rows + [@header]).each do |row|
           row.each_with_index do |value, index|
             current, max = value.length, @sizes[index] || 0
