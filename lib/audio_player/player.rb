@@ -32,6 +32,22 @@ module AudioPlayer
 
       filename = "#{@folder}/#{track.id}.mp3"
 
+      # delete any cached file that didn't stream completely
+      if File.exists?(filename)
+        begin
+          cmd = "ffmpeg -i #{filename} 2>&1 |
+            sed -n \"s/.*Duration: \\([^,]*\\).*/\\1/p\""
+          cached_duration = parse_cached_duration(%x[ #{cmd} ])
+          if cached_duration < track['duration'] * 0.95
+            File.delete(filename)
+          end
+        rescue => e
+          @logger.warn('Error checking cached stream')
+          @logger.warn(e.message)
+          File.delete(filename)
+        end
+      end
+
       DownloadThread.new(@logger, location, filename) unless File.exist?(filename)
 
       send!(:load, filename)
@@ -107,5 +123,21 @@ module AudioPlayer
       stop
       @position = 0
     end
+
+    def parse_cached_duration(dur)
+      milliseconds = 0
+      dur.split(':').each_with_index {|value, index|
+        case index
+        when 0
+          milliseconds += 1000 * 60 * 60 * value.to_i
+        when 1
+          milliseconds += 1000 * 60 * value.to_i
+        else
+          milliseconds += 1000 * value.to_i
+        end
+      }
+      milliseconds
+    end
+
   end
 end
