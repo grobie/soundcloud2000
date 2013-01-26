@@ -112,6 +112,7 @@ module AudioPlayer
       if tell == length
         output.write_array_of_float((0..samples).map { 0 })
         send! :on_complete
+        API.Pa_Sleep(1000)
       elsif slice = read(samples * 2)
         send! :on_level, level(slice)
         send! :on_position_change, position
