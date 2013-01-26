@@ -127,14 +127,7 @@ module AudioPlayer
     def parse_cached_duration(dur)
       milliseconds = 0
       dur.split(':').each_with_index {|value, index|
-        case index
-        when 0
-          milliseconds += 1000 * 60 * 60 * value.to_i
-        when 1
-          milliseconds += 1000 * 60 * value.to_i
-        else
-          milliseconds += 1000 * value.to_i
-        end
+        milliseconds += 1000 * (60 ** (2 - index).abs) * value.to_i
       }
       milliseconds
     end
