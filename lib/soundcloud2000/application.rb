@@ -8,15 +8,23 @@ require_relative 'controllers/splash_controller'
 
 module Soundcloud2000
   class Application
+    include Controllers
 
     def initialize(client)
       @logger = Logger.new('debug.log')
+      $stderr.reopen("debug.log", "w")
       @canvas = UI::Canvas.new
-      @player_controller = Controllers::PlayerController.new(@logger, client, 10, Curses.cols, 0, 0)
-      @track_controller = Controllers::TrackController.new(client, 10)
-      @splash_controller = Controllers::SplashController.new
+
+      @player_controller = PlayerController.new(@logger, client, 5, Curses.cols, 0, 0)
+      @track_controller = TrackController.new(client, 5)
+      @splash_controller = SplashController.new
+
       @track_controller.events.on(:select) do |track|
         @player_controller.play(track)
+      end
+
+      @player_controller.events.on(:complete) do
+        @track_controller.next_track
       end
     end
 

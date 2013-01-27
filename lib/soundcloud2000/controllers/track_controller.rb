@@ -46,6 +46,12 @@ module Soundcloud2000
         @table.render
       end
 
+      def next_track
+        @table.down
+        @table.select
+        events.trigger(:select, @tracks[@table.current])
+      end
+
     protected
 
       def more?

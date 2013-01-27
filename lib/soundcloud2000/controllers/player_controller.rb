@@ -5,6 +5,7 @@ require_relative '../ui/player'
 module Soundcloud2000
   module Controllers
     class PlayerController < Controller
+      attr_reader :player
 
       def initialize(logger, client, h, w, x, y)
         super
@@ -12,6 +13,14 @@ module Soundcloud2000
         @logger = logger
         @client = client
         @player = Player.new(@logger)
+
+        @player.events.on(:progress) do
+          @view.render
+        end
+
+        @player.events.on(:complete) do
+          events.trigger(:complete)
+        end
 
         @view = UI::Player.new(h, w, x, y)
         @view.player(@player)
@@ -34,9 +43,7 @@ module Soundcloud2000
       def play(track)
         location = @client.location(track.stream_url)
 
-        @player.play(track, location) do
-          @view.render
-        end
+        @player.play(track, location)
       end
 
     end
