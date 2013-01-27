@@ -1,25 +1,36 @@
 # soundcloud2000
 
-The next generation SoundCloud client. Without all these stupid CSS files.
+The next generation SoundCloud client. Without all these stupid CSS files. Runs on OSX and Linux.
 
 ![Screen Shot 2013-01-20 at 15 37 03](https://f.cloud.github.com/assets/3432/81282/06c44c7e-630f-11e2-9a91-85c9b917835c.png)
 ![Screen Shot 2013-01-20 at 15 37 54](https://f.cloud.github.com/assets/3432/81281/06b05df4-630f-11e2-8b55-7f3c18126831.png)
 
 This hack was built at the [Music Hack Day Stockholm 2013](http://stockholm.musichackday.org/2013).
 
-There are currently some issues with filling the play buffer while still downloading the mp3 file.
-
 ## Requirements
 
-  * ruby 1.9
-  * Core Audio (only available on OSX and iOS)
-  * FFTW
+  * Ruby (1.8/1.9)
+  * Portaudio
+  * Mpg123
 
 ## Installation
 
-    brew install fftw
-    bundle install
-    bin/soundcloud2000
+Assuming you have Ruby/Rubygems/Bundler installed, you need
+portaudio and mpg123 as library installed to compile the
+native extensions.
+
+### OSX
+
+  brew install portaudio
+  brew install mpg123
+  bundle install
+  bin/soundcloud2000
+
+### Debian / Ubuntu
+
+  apt-get install libportaudio-dev libmp123-dev
+  bundle install
+  bin/soundcloud2000
 
 ## Features
 
@@ -28,14 +39,12 @@ There are currently some issues with filling the play buffer while still downloa
   * play / pause support (`space`)
   * forward / rewind support (`right` / `left`)
   * play tracks of different users (`u`)
-  * basic spectrum analyzer (`s` to toggle)
+  * level meter
 
 ## Planned
 
   * play any streams, sets or sounds
   * better browsing between users and sound lists
-  * fix playback glitches during file download
-  * Linux support
 
 ## Authors
 

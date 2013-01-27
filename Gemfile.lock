@@ -1,21 +1,17 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    coreaudio (0.0.9)
-      narray (~> 0.6.0.0)
-    fftw3 (0.3)
-      narray
+    audite (0.1.5)
     hashie (1.2.0)
     httmultiparty (0.3.8)
       httparty (>= 0.7.3)
       multipart-post
-    httparty (0.10.0)
+    httparty (0.10.2)
       multi_json (~> 1.0)
-      multi_xml
+      multi_xml (>= 0.5.2)
     multi_json (1.5.0)
     multi_xml (0.5.2)
     multipart-post (1.1.5)
-    narray (0.6.0.4)
     soundcloud (0.3.1)
       hashie
       httmultiparty (>= 0.3)
@@ -25,6 +21,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  coreaudio
-  fftw3
+  audite
   soundcloud
