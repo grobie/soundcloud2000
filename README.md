@@ -9,7 +9,7 @@ This hack was built at the [Music Hack Day Stockholm 2013](http://stockholm.musi
 
 ## Requirements
 
-  * Ruby (1.8/1.9)
+  * Ruby (1.9)
   * Portaudio
   * Mpg123
 
@@ -21,16 +21,16 @@ native extensions.
 
 ### OSX
 
-  brew install portaudio
-  brew install mpg123
-  bundle install
-  bin/soundcloud2000
+    brew install portaudio
+    brew install mpg123
+    bundle install
+    bin/soundcloud2000
 
 ### Debian / Ubuntu
 
-  apt-get install libportaudio-dev libmp123-dev
-  bundle install
-  bin/soundcloud2000
+    apt-get install libportaudio-dev libmp123-dev
+    bundle install
+    bin/soundcloud2000
 
 ## Features
 
