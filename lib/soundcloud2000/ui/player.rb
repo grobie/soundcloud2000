@@ -22,14 +22,12 @@ module Soundcloud2000
     protected
 
       def draw
-        line progress
+        line progress + download_progress
         with_color(:green) do
           line (duration + ' - ' + status).ljust(16) + @player.title
         end
         line track_info
-        spectrum.transpose[0...lines_left].reverse.each do |l|
-          line l.join
-        end
+        line '>' * (@player.level.to_f * body_width).ceil
       end
 
       def status
@@ -40,17 +38,13 @@ module Soundcloud2000
         '#' * (@player.play_progress * body_width).ceil
       end
 
-      def spectrum
-        max = 5
-        @player.spectrum.map do |i|
-          if @spectrum
-            x = (0...i.to_i).map { '#' }
-            x = x.slice(0, max) if x.size > max
-            (max - x.size).times { x << '' } if x.size < max
-          else
-            x = [''] * max
-          end
-          x
+      def download_progress
+        progress = @player.download_progress - @player.play_progress
+
+        if progress > 0
+          '.' * (progress * body_width).ceil
+        else
+          ''
         end
       end
 
