@@ -28,7 +28,7 @@ native extensions.
 
 ### Debian / Ubuntu
 
-    apt-get install libportaudio-dev libmp123-dev
+    apt-get install portaudio19-dev libmp123-dev
     bundle install
     bin/soundcloud2000
 
