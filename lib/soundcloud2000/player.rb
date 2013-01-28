@@ -10,6 +10,8 @@ module Soundcloud2000
       @track = nil
       @events = Events.new
       @folder = File.expand_path("~/.soundcloud2000")
+      @seek_speed = {}
+      @seek_time = {}
 
       Dir.mkdir(@folder) unless File.exist?(@folder)
     end
@@ -39,7 +41,11 @@ module Soundcloud2000
     end
 
     def play_progress
-      seconds_played / (@track.duration / 1000)
+      seconds_played / duration
+    end
+
+    def duration
+      @track.duration.to_f / 1000
     end
 
     def title
@@ -89,12 +95,28 @@ module Soundcloud2000
       @player.active
     end
 
+
+    def seek_speed(direction)
+      if @seek_time[direction] && Time.now - @seek_time[direction] < 0.5
+        @seek_speed[direction] *= 1.05
+      else
+        @seek_speed[direction] = 1
+      end
+
+      @seek_time[direction] = Time.now
+      @seek_speed[direction]
+    end
+
     def rewind
-      @player.rewind if @player
+      @player.rewind(seek_speed(:rewind)) if @player
     end
 
     def forward
-      @player.forward if @player
+      seconds = seek_speed(:forward)
+
+      if @player && ((seconds + seconds_played) / duration) < download_progress
+        @player.forward(seconds)
+      end
     end
 
     def stop
