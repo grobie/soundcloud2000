@@ -10,14 +10,13 @@ This hack was built at the [Music Hack Day Stockholm 2013](http://stockholm.musi
 ## Requirements
 
   * Ruby (1.9)
-  * Portaudio
-  * Mpg123
+  * Portaudio (19)
+  * Mpg123 (1.14)
 
 ## Installation
 
 Assuming you have Ruby/Rubygems/Bundler installed, you need
-portaudio and mpg123 as library installed to compile the
-native extensions.
+portaudio and mpg123 as library to compile the native extensions.
 
 ### OSX
 
@@ -28,7 +27,7 @@ native extensions.
 
 ### Debian / Ubuntu
 
-    apt-get install portaudio19-dev libmp123-dev
+    apt-get install portaudio19-dev libmpg123-dev
     bundle install
     bin/soundcloud2000
 
