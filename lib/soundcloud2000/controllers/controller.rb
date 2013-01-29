@@ -5,8 +5,13 @@ module Soundcloud2000
     class Controller
       attr_reader :events
 
-      def initialize(*args)
+      def initialize(view)
+        @view = view
         @events = Events.new
+      end
+
+      def render
+        @view.render
       end
 
     end

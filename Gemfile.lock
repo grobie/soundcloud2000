@@ -9,6 +9,9 @@ GEM
     httparty (0.10.2)
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
+    metaclass (0.0.1)
+    mocha (0.12.7)
+      metaclass (~> 0.0.1)
     multi_json (1.5.0)
     multi_xml (0.5.2)
     multipart-post (1.1.5)
@@ -22,4 +25,5 @@ PLATFORMS
 
 DEPENDENCIES
   audite
+  mocha
   soundcloud

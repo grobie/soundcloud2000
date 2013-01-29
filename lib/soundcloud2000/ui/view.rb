@@ -9,11 +9,11 @@ module Soundcloud2000
       LINE_SEPARATOR = ?-
       INTERSECTION = ?+
 
-      attr_reader :height, :width, :x, :y
+      attr_reader :rect
 
-      def initialize(height = Curses.lines, width = Curses.cols, x = 0, y = 0)
-        @height, @width, @x, @y = height - x, width - y, x, y
-        @window = Curses::Window.new(height, width, x, y)
+      def initialize(rect)
+        @rect = rect
+        @window = Curses::Window.new(rect.height, rect.width, rect.y, rect.x)
         @line = 0
         @padding = 0
       end
@@ -23,13 +23,14 @@ module Soundcloud2000
       end
 
       def render
+        perform_layout
         reset
         draw
         refresh
       end
 
       def body_width
-        width - 2 * padding
+        rect.width - 2 * padding
       end
 
       def with_color(name, &block)
@@ -42,17 +43,14 @@ module Soundcloud2000
 
     protected
 
-      def line_number
-        @line += 1
-      end
-
       def lines_left
-        height - line_number - 1
+        rect.height - @line - 1
       end
 
       def line(content)
-        @window.setpos(line_number, padding)
+        @window.setpos(@line, padding)
         @window.addstr(content.ljust(body_width).slice(0, body_width))
+        @line += 1
       end
 
       def reset
@@ -61,6 +59,9 @@ module Soundcloud2000
 
       def refresh
         @window.refresh
+      end
+
+      def perform_layout
       end
 
       def draw

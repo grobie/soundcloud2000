@@ -1,18 +1,16 @@
 require_relative 'controller'
-require_relative '../player'
-require_relative '../ui/player'
+require_relative '../models/player'
+require_relative '../views/player_view'
 
 module Soundcloud2000
   module Controllers
     class PlayerController < Controller
-      attr_reader :player
 
-      def initialize(logger, client, h, w, x, y)
-        super
+      def initialize(view, client, logger)
+        super(view)
 
-        @logger = logger
         @client = client
-        @player = Player.new(@logger)
+        @player = Models::Player.new(logger)
 
         @player.events.on(:progress) do
           @view.render
@@ -22,20 +20,19 @@ module Soundcloud2000
           events.trigger(:complete)
         end
 
-        @view = UI::Player.new(h, w, x, y)
         @view.player(@player)
 
         events.on(:key) do |key|
           case key
-          when :left then  @player.rewind
-          when :right then @player.forward
+          when :left
+            @player.rewind
+          when :right
+            @player.forward
           when :space
             if @player.track
               @player.toggle
               @view.render
             end
-          when :s
-            @view.toggle_spectrum
           end
         end
       end
