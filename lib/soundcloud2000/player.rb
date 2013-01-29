@@ -22,10 +22,6 @@ module Soundcloud2000
         events.trigger(:progress)
       end
 
-      player.events.on(:level) do |level|
-        @level = level
-      end
-
       player.events.on(:complete) do
         events.trigger(:complete)
       end
@@ -76,7 +72,7 @@ module Soundcloud2000
     end
 
     def level
-      @level.to_f
+      @player.level if @player
     end
 
     def seconds_played
