@@ -1,7 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    audite (0.1.6)
+    audite (0.2.0)
     hashie (1.2.0)
     httmultiparty (0.3.8)
       httparty (>= 0.7.3)
