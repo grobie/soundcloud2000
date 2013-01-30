@@ -2,24 +2,13 @@ GEM
   remote: http://rubygems.org/
   specs:
     audite (0.3.0)
-    hashie (1.2.0)
-    httmultiparty (0.3.8)
-      httparty (>= 0.7.3)
-      multipart-post
-    httparty (0.10.2)
-      multi_json (~> 1.0)
-      multi_xml (>= 0.5.2)
-    multi_json (1.5.0)
-    multi_xml (0.5.2)
-    multipart-post (1.1.5)
-    soundcloud (0.3.1)
-      hashie
-      httmultiparty (>= 0.3)
-      httparty (>= 0.7.3)
+    metaclass (0.0.1)
+    mocha (0.12.7)
+      metaclass (~> 0.0.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   audite
-  soundcloud
+  mocha

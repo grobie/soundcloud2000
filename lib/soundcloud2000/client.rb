@@ -1,46 +1,50 @@
-require 'soundcloud'
 require 'net/http'
+require 'json'
 
 module Soundcloud2000
   class Client
     DEFAULT_LIMIT = 50
 
+    attr_reader :client_id
+
     def initialize(client_id)
-      @client = Soundcloud.new(client_id: client_id)
+      @client_id = client_id
     end
 
     def tracks(page = 1, limit = DEFAULT_LIMIT)
-      @client.get('/tracks', offset: (page - 1) * limit, limit: limit)
+      get('/tracks', offset: (page - 1) * limit, limit: limit)
     end
 
-    def tracks_by_username(username, page = 1, limit = DEFAULT_LIMIT)
-      begin
-        resolve_user = @client.get('/resolve',
-                                   :url => "http://soundcloud.com/#{username}")
-        @client.get(resolve_user['uri'] + '/tracks', offset: (page - 1) * limit,
-                    limit: limit)
-      rescue Soundcloud::ResponseError
-        nil
+    def resolve(permalink)
+      res = get('/resolve', url: "http://soundcloud.com/#{permalink}")
+      if location = res['location']
+        get URI.parse(location).path
       end
     end
 
-    def get(*args)
-      @client.get(*args)
+    def uri_escape(params)
+      URI.escape(params.collect{|k,v| "#{k}=#{v}"}.join('&'))
     end
 
-    def client_id
-      @client.client_id
+    def request(type, path, params={})
+      params[:client_id] = client_id
+      params[:format] = 'json'
+
+      Net::HTTP.start('api.soundcloud.com', 443, :use_ssl => true) do |http|
+        http.request(type.new("#{path}?#{uri_escape params}"))
+      end
+    end
+
+    def get(path, params={})
+      JSON.parse(request(Net::HTTP::Get, path, params).body)
     end
 
     def location(url)
-      uri = URI.parse(url + '?client_id=' + client_id)
-      Net::HTTP.get_response(uri) do |res|
-        if res.code == '302'
-          return res.header['Location']
-        end
+      uri = URI.parse(url)
+      res = request(Net::HTTP::Get, uri.path)
+      if res.code == '302'
+        res.header['Location']
       end
-
-      nil
     end
 
   end
