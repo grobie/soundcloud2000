@@ -3,6 +3,7 @@ require_relative '../time_helper'
 require_relative '../ui/table'
 require_relative '../ui/input'
 require_relative '../models/track_collection'
+require_relative '../models/user'
 
 module Soundcloud2000
   module Controllers
@@ -25,7 +26,7 @@ module Soundcloud2000
             @tracks.load_more if @view.bottom?
           when :u
             permalink = UI::Input.getstr('Change to SoundCloud user: ')
-            @tracks.user = @client.resolve(permalink)
+            @tracks.user = Models::User.new(@client.resolve(permalink))
           end
         end
       end

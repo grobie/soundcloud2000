@@ -14,6 +14,9 @@ module Soundcloud2000
         @hash['username']
       end
 
+      def uri
+        @hash['uri']
+      end
     end
   end
 end
