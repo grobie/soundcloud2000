@@ -1,8 +1,8 @@
-require_relative 'view'
+require_relative '../ui/view'
 
 module Soundcloud2000
-  module UI
-    class Splash < View
+  module Views
+    class Splash < UI::View
       CONTENT = %q{
                                          ohmmNNmmdyoo.
                                         dhMMMMMMMMMMMMMMMms-
@@ -37,11 +37,11 @@ module Soundcloud2000
     protected
 
       def left
-        (width - lines.map(&:length).max) / 2
+        (rect.width - lines.map(&:length).max) / 2
       end
 
       def top
-        (height - lines.size) / 2
+        (rect.height - lines.size) / 2
       end
 
       def lines

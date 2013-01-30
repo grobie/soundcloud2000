@@ -1,8 +1,9 @@
 require_relative '../time_helper'
+require_relative '../ui/view'
 
 module Soundcloud2000
-  module UI
-    class Player < View
+  module Views
+    class PlayerView < UI::View
 
       def initialize(*attrs)
         super
@@ -53,7 +54,7 @@ module Soundcloud2000
       end
 
       def track_info
-        "#{track.playback_count} Plays | #{track.favoritings_count} Likes | #{track.comment_count} Comments | #{track.permalink_url}"
+        "#{track.plays} Plays | #{track.likes} Likes | #{track.comments} Comments | #{track.url}"
       end
 
       def duration

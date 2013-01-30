@@ -5,7 +5,8 @@ module Soundcloud2000
     class Table < View
       SEPARATOR = '  |  '
 
-      attr_reader :current
+      attr_reader :current, :collection
+      attr_accessor :header, :keys
 
       def initialize(*args)
         super
@@ -18,23 +19,20 @@ module Soundcloud2000
         reset
       end
 
-      def header(*elements)
-        @header = elements
-        @header
-      end
+      def bind_to(collection)
+        raise ArgumentError if @collection
 
-      def body(*rows)
-        @rows = rows
-        calculate_widths
-        @rows
+        @collection = collection
+        @collection.events.on(:append) { render }
+        @collection.events.on(:replace) { clear; render }
       end
 
       def length
-        @rows.size
+        @collection.size
       end
 
       def body_height
-        height - Array(@header).size
+        rect.height - @header.size
       end
 
       def bottom?
@@ -69,22 +67,27 @@ module Soundcloud2000
 
     protected
 
-      def rest_width(elements)
-        width - elements.size * SEPARATOR.size - elements.inject(0) { |sum, size| sum += size }
+      def rows(start = 0, size = collection.size)
+        collection[start, size].map do |record|
+          keys.map {|key| record.send(key).to_s }
+        end
       end
 
-      def calculate_widths
+      def rest_width(elements)
+        rect.width - elements.size * SEPARATOR.size -
+          elements.inject(0) { |sum, size| sum += size }
+      end
+
+      def perform_layout
         @sizes = []
-        (@rows + [@header]).each do |row|
+        (rows + [header]).each do |row|
           row.each_with_index do |value, index|
-            current, max = value.length, @sizes[index] || 0
+            current, max = value.to_s.length, @sizes[index] || 0
             @sizes[index] = current if max < current
           end
         end
 
         @sizes[-1] = rest_width(@sizes[0...-1])
-
-        render
       end
 
       def draw
@@ -93,10 +96,8 @@ module Soundcloud2000
       end
 
       def draw_header
-        if @header
-          with_color(:green_reverse) do
-            draw_values(@header)
-          end
+        with_color(:green_reverse) do
+          draw_values(header)
         end
       end
 
@@ -111,7 +112,7 @@ module Soundcloud2000
       end
 
       def draw_body
-        @rows[@top, body_height + 1].each_with_index do |row, index|
+        rows(@top, body_height + 1).each_with_index do |row, index|
           with_color(color_for(index)) do
             draw_values(row)
           end
