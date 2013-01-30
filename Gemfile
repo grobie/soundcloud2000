@@ -1,6 +1,5 @@
 source :rubygems
 
-gem 'soundcloud'
 gem 'audite'
 
 group 'test' do
