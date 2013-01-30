@@ -45,8 +45,8 @@ module Soundcloud2000
       end
 
       def next_track
-        @table.down
-        @table.select
+        @view.down
+        @view.select
         events.trigger(:select, current_track)
       end
 

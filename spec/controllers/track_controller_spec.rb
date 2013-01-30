@@ -16,6 +16,15 @@ module Soundcloud2000
         subject.bind_to(tracks)
       end
 
+      it 'plays next track' do
+        table.expects(:down)
+        table.expects(:select)
+        table.expects(:current).returns(mock)
+        tracks.expects(:[]).returns(mock)
+
+        subject.next_track
+      end
+
       it 'on key enter' do
         table.expects(:select)
         table.expects(:current).returns(mock)
