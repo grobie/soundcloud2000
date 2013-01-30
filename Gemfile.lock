@@ -2,6 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     audite (0.3.0)
+    json (1.7.6)
     metaclass (0.0.1)
     mocha (0.12.7)
       metaclass (~> 0.0.1)
@@ -11,4 +12,5 @@ PLATFORMS
 
 DEPENDENCIES
   audite
+  json
   mocha
