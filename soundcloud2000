@@ -5,4 +5,5 @@ ROOT_PATH=$(dirname $0)
 export DYLD_LIBRARY_PATH=$ROOT_PATH/dyld
 export RUBYLIB=$ROOT_PATH/lib
 
-$ROOT_PATH/ruby $ROOT_PATH/bin/soundcloud2000
+/Users/foldermac/.rvm/rubies/ruby-1.9.2-p320/bin/ruby $ROOT_PATH/bin/soundcloud2000
+ruby $ROOT_PATH/bin/soundcloud2000

@@ -10,6 +10,8 @@ module Soundcloud2000
         Curses::KEY_UP     => :up,
         Curses::KEY_CTRL_J => :enter,
         Curses::KEY_ENTER  => :enter,
+        Curses::KEY_SLEFT  => :shiftleft,
+        Curses::KEY_SRIGHT => :shiftright,
         ' '                => :space,
         's'                => :s,
         'u'                => :u,
