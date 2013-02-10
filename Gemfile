@@ -1,6 +1,5 @@
 source :rubygems
 
-
 gem 'json'
 gem 'audite'
 
