@@ -2,19 +2,15 @@ GEM
   remote: http://rubygems.org/
   specs:
     audite (0.3.0)
-    extensions (0.6.0)
     json (1.7.6)
     metaclass (0.0.1)
     mocha (0.12.7)
       metaclass (~> 0.0.1)
-    rbx-require-relative (0.0.9)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   audite
-  extensions
   json
   mocha
-  rbx-require-relative
