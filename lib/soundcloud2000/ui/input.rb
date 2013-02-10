@@ -5,11 +5,15 @@ module Soundcloud2000
     class Input
       MAPPING = {
         Curses::KEY_LEFT   => :left,
+        Curses::KEY_SRIGHT => :shiftright,
+        Curses::KEY_SLEFT  => :shiftleft,
         Curses::KEY_RIGHT  => :right,
         Curses::KEY_DOWN   => :down,
         Curses::KEY_UP     => :up,
         Curses::KEY_CTRL_J => :enter,
         Curses::KEY_ENTER  => :enter,
+        Curses::KEY_SLEFT  => :shiftleft,
+        Curses::KEY_SRIGHT => :shiftright,
         ' '                => :space,
         's'                => :s,
         'u'                => :u,
