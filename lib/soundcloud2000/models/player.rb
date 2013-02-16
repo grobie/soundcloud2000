@@ -10,7 +10,7 @@ module Soundcloud2000
         @logger = logger
         @track = nil
         @events = Events.new
-        @folder = File.expand_path("~/.soundcloud2000")
+        @folder = APP_FOLDER
         @seek_speed = {}
         @seek_time = {}
 
