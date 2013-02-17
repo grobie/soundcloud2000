@@ -6,20 +6,22 @@ module Soundcloud2000
     class TrackCollection < Collection
       DEFAULT_LIMIT = 50
 
-      attr_reader :limit, :user
+      attr_reader :limit
+      attr_accessor :collection_to_load, :user
 
       def initialize(client)
         super
         @limit = DEFAULT_LIMIT
+        @collection_to_load = :recent
       end
 
       def size
         @rows.size
       end
 
-      def user=(user)
-        @user = user
-        load
+      def clear_and_replace
+        clear
+        load_more
         events.trigger(:replace)
       end
 
@@ -30,11 +32,15 @@ module Soundcloud2000
 
       def load_more
         unless @loaded
-          tracks = user ? user_tracks : recent_tracks
+          tracks = self.send(@collection_to_load.to_s + "_tracks")
           @loaded = true if tracks.empty?
           append tracks.map {|hash| Track.new hash }
           @page += 1
         end
+      end
+
+      def favorites_tracks
+        @client.get(@user.uri + '/favorites', offset: @limit * @page, limit: @limit)
       end
 
       def recent_tracks
