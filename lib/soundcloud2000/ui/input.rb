@@ -13,6 +13,7 @@ module Soundcloud2000
         ' '                => :space,
         's'                => :s,
         'u'                => :u,
+        'f'                => :f
       }
 
       def self.get(delay = 0)
