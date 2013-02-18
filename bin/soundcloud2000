@@ -5,8 +5,7 @@ require_relative '../lib/soundcloud2000'
 mode = ARGV.shift
 
 if mode == "--auth"
-  Soundcloud2000.auth(ARGV)
+  Soundcloud2000.authenticate(ARGV)
 else
-  Soundcloud2000.refresh_token
   Soundcloud2000.start
 end
