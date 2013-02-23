@@ -27,6 +27,10 @@ module Soundcloud2000
           when :u
             permalink = UI::Input.getstr('Change to SoundCloud user: ')
             @tracks.user = Models::User.new(@client.resolve(permalink))
+          when :shiftright
+            next_track
+          when :shiftleft
+            previous_track
           end
         end
       end
@@ -44,6 +48,11 @@ module Soundcloud2000
         @tracks.load
       end
 
+      def previous_track
+        @view.up
+        @view.select
+        events.trigger(:select, current_track)
+      end
       def next_track
         @view.down
         @view.select
