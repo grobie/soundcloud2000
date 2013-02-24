@@ -33,6 +33,24 @@ module Soundcloud2000
               @player.toggle
               @view.render
             end
+          when :one
+            @player.seek_position(1)
+          when :two
+            @player.seek_position(2)
+          when :three
+            @player.seek_position(3)
+          when :four
+            @player.seek_position(4)
+          when :five
+            @player.seek_position(5)
+          when :six
+            @player.seek_position(6)
+          when :seven  
+            @player.seek_position(7)
+          when :eight
+            @player.seek_position(8)
+          when :nine
+            @player.seek_position(9)
           end
         end
       end
