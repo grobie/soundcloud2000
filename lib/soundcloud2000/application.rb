@@ -71,7 +71,7 @@ module Soundcloud2000
       case key
       when :left, :right, :space, :s, :one, :two, :three, :four, :five, :six, :seven, :eight, :nine
         @player_controller.events.trigger(:key, key)
-      when :down, :up, :enter, :u
+      when :down, :up, :enter, :u, :f
         @track_controller.events.trigger(:key, key)
       end
     end
