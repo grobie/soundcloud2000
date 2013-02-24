@@ -99,8 +99,21 @@ module Soundcloud2000
           @seek_speed[direction] = 1
         end
 
-        @seek_time[direction] = Time.now
+        @seek_time[direction] =  Time.now
         @seek_speed[direction]
+      end
+      #change song position
+      def seek_position(position)
+        position *= 0.1
+        relative_position = position * duration
+        if @player && relative_position < seconds_played
+          difference = seconds_played - relative_position
+          @player.rewind(difference)
+        elsif @player &&  download_progress > (relative_position / duration) && relative_position > seconds_played
+          log download_progress
+          difference = relative_position - seconds_played
+          @player.forward(difference)
+        end
       end
 
       def rewind
