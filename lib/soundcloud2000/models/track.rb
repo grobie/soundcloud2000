@@ -52,6 +52,10 @@ module Soundcloud2000
         @hash['stream_url']
       end
 
+      def permalink
+        user.permalink
+      end
+
     end
   end
 end
