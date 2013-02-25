@@ -5,8 +5,8 @@ module Soundcloud2000
     class TracksTable < UI::Table
       def initialize(*args)
         super
-        self.header = ['Title', 'User', 'Length', 'Plays', 'Likes', 'Comments']
-        self.keys   = [:title, :username, :length, :plays, :likes, :comments]
+        self.header = ['Title', 'User Link', 'User Name', 'Length', 'Plays', 'Likes', 'Comments']
+        self.keys   = [:title, :permalink, :username, :length, :plays, :likes, :comments]
       end
     end
   end
