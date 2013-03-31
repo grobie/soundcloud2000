@@ -1,6 +1,6 @@
 module Soundcloud2000
   module Models
-    class User
+    class Playlist
 
       def initialize(hash)
         @hash = hash
@@ -10,17 +10,14 @@ module Soundcloud2000
         @hash['id']
       end
 
-      def username
-        @hash['username']
+      def title
+        @hash['title']
       end
-
+      
       def uri
         @hash['uri']
       end
       
-      def permalink
-        @hash['permalink']
-      end
     end
   end
 end

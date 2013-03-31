@@ -1,5 +1,6 @@
 require_relative 'collection'
 require_relative 'track'
+require_relative 'playlist'
 
 module Soundcloud2000
   module Models
@@ -7,7 +8,7 @@ module Soundcloud2000
       DEFAULT_LIMIT = 50
 
       attr_reader :limit
-      attr_accessor :collection_to_load, :user
+      attr_accessor :collection_to_load, :user, :playlist
 
       def initialize(client)
         super
@@ -50,6 +51,11 @@ module Soundcloud2000
       def user_tracks
         @client.get(@user.uri + '/tracks', offset: @limit * @page, limit: @limit)
       end
+      
+      def playlist_tracks
+        @client.get(@playlist.uri + '/tracks', offset: @limit * @page, limit: @limit)
+      end
+        
     end
   end
 end
