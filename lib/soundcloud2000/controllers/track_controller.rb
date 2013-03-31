@@ -36,6 +36,18 @@ module Soundcloud2000
             end
             @tracks.collection_to_load = :favorites
             @tracks.clear_and_replace
+          when :s
+            @view.clear
+            if @tracks.user.nil?
+              permalink = UI::Input.getstr('Change to SoundCloud user: ')
+              @tracks.user = Models::User.new(@client.resolve(permalink))
+            end
+            if @tracks.playlist.nil?
+              set = UI::Input.getstr('Change to SoundCloud playlist: ')
+              @tracks.playlist = Models::Playlist.new(@client.resolve(@tracks.user.permalink + '/sets/' + set))
+            end
+            @tracks.collection_to_load = :playlist
+            @tracks.clear_and_replace
           end
         end
       end

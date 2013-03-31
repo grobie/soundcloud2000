@@ -13,13 +13,13 @@ module Soundcloud2000
       def username
         @hash['username']
       end
-
-      def uri
-        @hash['uri']
-      end
       
       def permalink
         @hash['permalink']
+      end
+
+      def uri
+        @hash['uri']
       end
     end
   end
