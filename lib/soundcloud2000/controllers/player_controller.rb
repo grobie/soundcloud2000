@@ -45,7 +45,7 @@ module Soundcloud2000
             @player.seek_position(5)
           when :six
             @player.seek_position(6)
-          when :seven  
+          when :seven
             @player.seek_position(7)
           when :eight
             @player.seek_position(8)
