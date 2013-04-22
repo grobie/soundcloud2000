@@ -41,6 +41,7 @@ module Soundcloud2000
       end
 
       def favorites_tracks
+        return [] if @user.nil?
         @client.get(@user.uri + '/favorites', offset: @limit * @page, limit: @limit)
       end
 
@@ -49,10 +50,12 @@ module Soundcloud2000
       end
 
       def user_tracks
+        return [] if @user.nil?
         @client.get(@user.uri + '/tracks', offset: @limit * @page, limit: @limit)
       end
 
       def playlist_tracks
+        return [] if @playlist.nil?
         @client.get(@playlist.uri + '/tracks', offset: @limit * @page, limit: @limit)
       end
 
