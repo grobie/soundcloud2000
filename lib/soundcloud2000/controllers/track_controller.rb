@@ -25,28 +25,35 @@ module Soundcloud2000
             @view.down
             @tracks.load_more if @view.bottom?
           when :u
-            permalink = UI::Input.getstr('Change to SoundCloud user: ')
-            @tracks.user = Models::User.new(@client.resolve(permalink))
+            @tracks.user = fetch_user_with_message('Change to SoundCloud user: ')
             @tracks.collection_to_load = :user
             @tracks.clear_and_replace
           when :f
             if @tracks.user.nil?
-              permalink = UI::Input.getstr('Change to favorites from SoundCloud user: ')
-              @tracks.user = Models::User.new(@client.resolve(permalink))
+              @tracks.user = fetch_user_with_message('Change to favorites from SoundCloud user: ')
             end
             @tracks.collection_to_load = :favorites
             @tracks.clear_and_replace
           when :s
             @view.clear
             if @tracks.user.nil?
-              permalink = UI::Input.getstr('Change to SoundCloud user: ')
-              @tracks.user = Models::User.new(@client.resolve(permalink))
+              @tracks.user = fetch_user_with_message('Change to SoundCloud user: ')
             end
             set = UI::Input.getstr('Change to SoundCloud playlist: ')
             @tracks.playlist = Models::Playlist.new(@client.resolve(@tracks.user.permalink + '/sets/' + set))
             @tracks.collection_to_load = :playlist
             @tracks.clear_and_replace
           end
+        end
+      end
+
+      def fetch_user_with_message(message_to_display)
+        permalink = UI::Input.getstr(message_to_display)
+        user_hash = @client.resolve(permalink)
+        if user_hash
+          Models::User.new(@client.resolve(permalink))
+        else
+          nil
         end
       end
 
