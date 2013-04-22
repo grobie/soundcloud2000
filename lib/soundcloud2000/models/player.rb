@@ -6,8 +6,7 @@ module Soundcloud2000
     class Player
       attr_reader :track, :events
 
-      def initialize(logger)
-        @logger = logger
+      def initialize
         @track = nil
         @events = Events.new
         @folder = File.expand_path("~/.soundcloud2000")
@@ -59,7 +58,7 @@ module Soundcloud2000
 
         if !File.exist?(@file) || track.duration / 1000 < length_in_seconds * 0.95
           File.unlink(@file) rescue nil
-          @download = DownloadThread.new(@logger, location, @file)
+          @download = DownloadThread.new(location, @file)
         else
           @download = nil
         end
@@ -69,7 +68,7 @@ module Soundcloud2000
       end
 
       def log(*args)
-        @logger.debug 'Player: ' + args.join(" ")
+        Soundcloud2000::Application.logger.debug 'Player: ' + args.join(" ")
       end
 
       def level

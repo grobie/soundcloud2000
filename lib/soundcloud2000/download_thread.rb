@@ -5,8 +5,7 @@ module Soundcloud2000
   class DownloadThread
     attr_reader :events, :url, :progress, :total, :file
 
-    def initialize(logger, url, filename)
-      @logger = logger
+    def initialize(url, filename)
       @events = Events.new
       @url = URI.parse(url)
       @file = File.open(filename, "w")
@@ -15,7 +14,7 @@ module Soundcloud2000
     end
 
     def log(s)
-      @logger.debug("DownloadThread #{s}")
+      Soundcloud2000::Application.logger.debug("DownloadThread #{s}")
     end
 
     def start!
