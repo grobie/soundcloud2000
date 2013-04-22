@@ -51,7 +51,7 @@ module Soundcloud2000
         permalink = UI::Input.getstr(message_to_display)
         user_hash = @client.resolve(permalink)
         if user_hash
-          Models::User.new(@client.resolve(permalink))
+          Models::User.new(user_hash)
         else
           nil
         end
