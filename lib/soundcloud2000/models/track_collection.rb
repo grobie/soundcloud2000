@@ -51,11 +51,11 @@ module Soundcloud2000
       def user_tracks
         @client.get(@user.uri + '/tracks', offset: @limit * @page, limit: @limit)
       end
-      
+
       def playlist_tracks
         @client.get(@playlist.uri + '/tracks', offset: @limit * @page, limit: @limit)
       end
-        
+
     end
   end
 end

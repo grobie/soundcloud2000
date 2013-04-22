@@ -17,7 +17,7 @@ module Soundcloud2000
       def uri
         @hash['uri']
       end
-      
+
       def permalink
         @hash['permalink']
       end
