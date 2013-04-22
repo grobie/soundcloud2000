@@ -6,11 +6,11 @@ module Soundcloud2000
   module Controllers
     class PlayerController < Controller
 
-      def initialize(view, client, logger)
+      def initialize(view, client)
         super(view)
 
         @client = client
-        @player = Models::Player.new(logger)
+        @player = Models::Player.new
 
         @player.events.on(:progress) do
           @view.render
