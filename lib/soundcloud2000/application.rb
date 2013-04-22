@@ -20,7 +20,6 @@ module Soundcloud2000
     include Views
 
     def initialize(client)
-      @logger = Logger.new('debug.log')
       $stderr.reopen("debug.log", "w")
       @canvas = UI::Canvas.new
 
@@ -28,7 +27,7 @@ module Soundcloud2000
           UI::Rect.new(0, 0, Curses.cols, Curses.lines)))
 
       @player_controller = PlayerController.new(PlayerView.new(
-          UI::Rect.new(0, 0, Curses.cols, 5)), client, @logger)
+          UI::Rect.new(0, 0, Curses.cols, 5)), client)
 
       @track_controller = TrackController.new(TracksTable.new(
           UI::Rect.new(0, 5, Curses.cols, Curses.lines - 5)), client)
@@ -82,6 +81,10 @@ module Soundcloud2000
 
     def stop?
       @stop == true
+    end
+
+    def self.logger
+      @logger ||= Logger.new('debug.log')
     end
 
   end
