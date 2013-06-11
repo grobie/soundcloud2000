@@ -21,7 +21,10 @@ module Soundcloud2000
       Thread.start do
         begin
           log :start
-          Net::HTTP.get_response(url) do |res|
+	  connection = Net::HTTP.new(@url.host, 443)
+          connection.use_ssl = true
+          connection.request_get(@url.path + '?' + @url.query) do |res|
+
             log "response: #{res.code}"
             raise res.body if res.code != '200'
 
