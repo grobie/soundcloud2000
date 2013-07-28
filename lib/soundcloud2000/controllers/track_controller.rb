@@ -19,9 +19,9 @@ module Soundcloud2000
           when :enter
             @view.select
             events.trigger(:select, current_track)
-          when :up
+          when :up, :k
             @view.up
-          when :down
+          when :down, :j
             @view.down
             @tracks.load_more if @view.bottom?
           when :u
