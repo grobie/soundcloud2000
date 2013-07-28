@@ -11,6 +11,8 @@ module Soundcloud2000
         Curses::KEY_CTRL_J => :enter,
         Curses::KEY_ENTER  => :enter,
         ' '                => :space,
+        'j'                => :j,
+        'k'                => :k,
         's'                => :s,
         'u'                => :u,
         '1'                => :one,
