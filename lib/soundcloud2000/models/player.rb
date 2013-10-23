@@ -12,21 +12,20 @@ module Soundcloud2000
         @folder = File.expand_path("~/.soundcloud2000")
         @seek_speed = {}
         @seek_time = {}
+        create_player
 
         Dir.mkdir(@folder) unless File.exist?(@folder)
       end
 
       def create_player
-        player = Audite.new
-        player.events.on(:position_change) do |position|
+        @player = Audite.new
+        @player.events.on(:position_change) do |position|
           events.trigger(:progress)
         end
 
-        player.events.on(:complete) do
+        @player.events.on(:complete) do
           events.trigger(:complete)
         end
-
-        player
       end
 
       def play(track, location)
@@ -63,7 +62,6 @@ module Soundcloud2000
           @download = nil
         end
 
-        @player ||= create_player
         @player.load(@file)
       end
 
@@ -105,10 +103,10 @@ module Soundcloud2000
       def seek_position(position)
         position *= 0.1
         relative_position = position * duration
-        if @player && relative_position < seconds_played
+        if relative_position < seconds_played
           difference = seconds_played - relative_position
           @player.rewind(difference)
-        elsif @player &&  download_progress > (relative_position / duration) && relative_position > seconds_played
+        elsif download_progress > (relative_position / duration) && relative_position > seconds_played
           log download_progress
           difference = relative_position - seconds_played
           @player.forward(difference)
@@ -116,29 +114,28 @@ module Soundcloud2000
       end
 
       def rewind
-        @player.rewind(seek_speed(:rewind)) if @player
+        @player.rewind(seek_speed(:rewind))
       end
 
       def forward
         seconds = seek_speed(:forward)
 
-        if @player && ((seconds + seconds_played) / duration) < download_progress
+        if ((seconds + seconds_played) / duration) < download_progress
           @player.forward(seconds)
         end
       end
 
       def stop
-        @player.stop_stream if @player
+        @player.stop_stream
       end
 
       def start
-        @player.start_stream if @player
+        @player.start_stream
       end
 
       def toggle
-        @player.toggle if @player
+        @player.toggle
       end
-
     end
   end
 end

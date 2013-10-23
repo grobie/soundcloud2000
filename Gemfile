@@ -1,8 +1,4 @@
 source 'https://rubygems.org'
 
-gem 'json'
-gem 'audite'
-
-group 'test' do
-  gem 'mocha'
-end
+# Specify your gem's dependencies in audite.gemspec
+gemspec
