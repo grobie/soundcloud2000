@@ -26,7 +26,7 @@ library to compile the native extensions.
 
 ### Debian / Ubuntu
 
-    apt-get install portaudio19-dev libmpg123-dev libncurses-dev
+    apt-get install portaudio19-dev libmpg123-dev libncurses-dev ruby1.9.1-dev
     gem install soundcloud2000
 
 ## Usage
