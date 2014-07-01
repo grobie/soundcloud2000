@@ -22,7 +22,6 @@ library to compile the native extensions.
 
     brew install portaudio
     brew install mpg123
-    brew install curses    
     gem install soundcloud2000
 
 ### Debian / Ubuntu
