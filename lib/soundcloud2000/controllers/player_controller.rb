@@ -29,11 +29,6 @@ module Soundcloud2000
               @player.rewind
             when :right
               @player.forward
-            when :space
-              if @player.track
-                @player.toggle
-                @view.render
-              end
             when :one
               @player.seek_position(1)
             when :two
@@ -52,6 +47,12 @@ module Soundcloud2000
               @player.seek_position(8)
             when :nine
               @player.seek_position(9)
+            end
+          end
+          if key == :space
+            if @player.track
+              @player.toggle
+              @view.render
             end
           end
         end
