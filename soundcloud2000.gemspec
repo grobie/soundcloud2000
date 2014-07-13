@@ -14,9 +14,9 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency "json"
-  s.add_dependency "audite"
-  s.add_dependency "curses"
+  s.add_runtime_dependency "json"
+  s.add_runtime_dependency "audite"
+  s.add_runtime_dependency "curses"
 
   s.add_development_dependency "bundler", "~> 1.3"
   s.add_development_dependency "rake"
