@@ -55,7 +55,7 @@ module Soundcloud2000
       def load(track, location, &block)
         @file = "#{@folder}/#{track.id}.mp3"
 
-        if !File.exist?(@file) || track.duration / 1000 < length_in_seconds * 0.95
+        if !File.exist?(@file) || track.duration / 1000 > length_in_seconds * 0.95
           File.unlink(@file) rescue nil
           @download = DownloadThread.new(location, @file)
         else
