@@ -40,9 +40,14 @@ module Soundcloud2000
               @tracks.user = fetch_user_with_message('Change to SoundCloud user: ')
             end
             set = UI::Input.getstr('Change to SoundCloud playlist: ')
-            @tracks.playlist = Models::Playlist.new(@client.resolve(@tracks.user.permalink + '/sets/' + set))
-            @tracks.collection_to_load = :playlist
-            @tracks.clear_and_replace
+            set_request = @client.resolve(@tracks.user.permalink + '/sets/' + set)
+            unless set_request == nil
+              @tracks.playlist = Models::Playlist.new(set_request)
+              @tracks.collection_to_load = :playlist
+              @tracks.clear_and_replace
+            else
+              UI::Input.input_line_out("No such set/playlist '#{set}' for #{@tracks.user.username}")
+            end
           end
         end
       end

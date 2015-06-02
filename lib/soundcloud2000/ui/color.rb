@@ -13,7 +13,7 @@ module Soundcloud2000
 
       DEFINITION = {
         PAIRS[:white] => [ Curses::COLOR_WHITE, Curses::COLOR_BLACK ],
-        PAIRS[:red]   => [ Curses::COLOR_RED,   Curses::COLOR_WHITE ],
+        PAIRS[:red]   => [ Curses::COLOR_RED,   Curses::COLOR_BLACK ],
         PAIRS[:blue]  => [ Curses::COLOR_BLUE,  Curses::COLOR_WHITE ],
         PAIRS[:green] => [ Curses::COLOR_GREEN, Curses::COLOR_BLACK ],
         PAIRS[:cyan]  => [ Curses::COLOR_BLACK, Curses::COLOR_CYAN  ],
