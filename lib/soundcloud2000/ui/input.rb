@@ -1,4 +1,5 @@
 require 'curses'
+require_relative 'color'
 
 module Soundcloud2000
   module UI
@@ -43,6 +44,11 @@ module Soundcloud2000
         result
       end
 
+      def self.input_line_out(output)
+        Curses.setpos(Curses.lines - 1, 0)
+        Curses.attron(Color.get(:red)) { Curses.addstr(output) }
+        Curses.echo
+      end
     end
   end
 end
