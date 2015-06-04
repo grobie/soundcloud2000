@@ -40,8 +40,8 @@ library to compile the native extensions.
   * play / pause support (`space`)
   * forward / rewind support (`right` / `left`)
   * play tracks of different users (`u`)
-  * play users favorites tracks  (`f`)
-  * play users sets/playlists  (`s`)
+  * play favorites from a user (`f`)
+  * play sets/playlists from a user  (`s`)
   * level meter
 
 ## Planned
