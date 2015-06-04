@@ -25,7 +25,7 @@ module Soundcloud2000
             @view.down
             @tracks.load_more if @view.bottom?
           when :u
-            @tracks.user = fetch_user_with_message('Change to SoundCloud user: ')
+            @tracks.user = @client.current_user = fetch_user_with_message('Change to SoundCloud user: ')
             @tracks.collection_to_load = :user
             @tracks.clear_and_replace
           when :f

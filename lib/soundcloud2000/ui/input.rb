@@ -35,6 +35,7 @@ module Soundcloud2000
 
       def self.getstr(prompt)
         Curses.setpos(Curses.lines - 1, 0)
+        Curses.clrtoeol()
         Curses.addstr(prompt)
         Curses.echo
         result = Curses.getstr
@@ -46,8 +47,8 @@ module Soundcloud2000
 
       def self.input_line_out(output)
         Curses.setpos(Curses.lines - 1, 0)
+        Curses.clrtoeol()
         Curses.attron(Color.get(:red)) { Curses.addstr(output) }
-        Curses.echo
       end
     end
   end

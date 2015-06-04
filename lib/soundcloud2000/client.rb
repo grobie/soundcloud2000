@@ -5,10 +5,12 @@ module Soundcloud2000
   class Client
     DEFAULT_LIMIT = 50
 
-    attr_reader :client_id
+    attr_reader :client_id, :user
+    attr_writer :user
 
     def initialize(client_id)
       @client_id = client_id
+      @current_user = nil
     end
 
     def tracks(page = 1, limit = DEFAULT_LIMIT)
