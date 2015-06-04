@@ -41,6 +41,7 @@ library to compile the native extensions.
   * forward / rewind support (`right` / `left`)
   * play tracks of different users (`u`)
   * play users favorites tracks  (`f`)
+  * play users sets/playlists  (`s`)
   * level meter
 
 ## Planned
