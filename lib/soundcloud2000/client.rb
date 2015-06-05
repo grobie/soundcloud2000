@@ -5,8 +5,8 @@ module Soundcloud2000
   class Client
     DEFAULT_LIMIT = 50
 
-    attr_reader :client_id, :user
-    attr_writer :user
+    attr_reader :client_id, :current_user
+    attr_writer :current_user
 
     def initialize(client_id)
       @client_id = client_id

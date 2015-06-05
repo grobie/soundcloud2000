@@ -25,9 +25,14 @@ module Soundcloud2000
             @view.down
             @tracks.load_more if @view.bottom?
           when :u
-            @tracks.user = @client.current_user = fetch_user_with_message('Change to SoundCloud user: ')
-            @tracks.collection_to_load = :user
-            @tracks.clear_and_replace
+            user = fetch_user_with_message('Change to SoundCloud user: ')
+            if user[:success]
+              @tracks.user = @client.current_user = user[:user]
+              @tracks.collection_to_load = :user
+              @tracks.clear_and_replace
+            else
+              UI::Input.input_line_out("No such user '#{user[:user]}'. Use u to try again.")
+            end
           when :f
             if @tracks.user.nil?
               @tracks.user = fetch_user_with_message('Change to favorites from SoundCloud user: ')
@@ -56,9 +61,11 @@ module Soundcloud2000
         permalink = UI::Input.getstr(message_to_display)
         user_hash = @client.resolve(permalink)
         if user_hash
-          Models::User.new(user_hash)
+          { success: true,
+            user: Models::User.new(user_hash) }
         else
-          nil
+          { success: false,
+            user: permalink }
         end
       end
 
