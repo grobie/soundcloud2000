@@ -34,24 +34,20 @@ module Soundcloud2000
               UI::Input.input_line_out("No such user '#{user[:user]}'. Use u to try again.")
             end
           when :f
-            if @tracks.user.nil?
-              @tracks.user = fetch_user_with_message('Change to favorites from SoundCloud user: ')
-            end
+            @client.current_user = fetch_user_with_message('Change to SoundCloud user: ') if @client.current_user.nil?
             @tracks.collection_to_load = :favorites
             @tracks.clear_and_replace
           when :s
             @view.clear
-            if @tracks.user.nil?
-              @tracks.user = fetch_user_with_message('Change to SoundCloud user: ')
-            end
+            @client.current_user = fetch_user_with_message('Change to SoundCloud user: ') if @client.current_user.nil?
             set = UI::Input.getstr('Change to SoundCloud playlist: ')
-            set_request = @client.resolve(@tracks.user.permalink + '/sets/' + set)
+            set_request = @client.resolve(@client.current_user.permalink + '/sets/' + set)
             unless set_request == nil
               @tracks.playlist = Models::Playlist.new(set_request)
               @tracks.collection_to_load = :playlist
               @tracks.clear_and_replace
             else
-              UI::Input.input_line_out("No such set/playlist '#{set}' for #{@tracks.user.username}")
+              UI::Input.input_line_out("No such set/playlist '#{set}' for #{@client.current_user.username}")
             end
           end
         end
