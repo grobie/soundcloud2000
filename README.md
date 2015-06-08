@@ -57,3 +57,4 @@ library to compile the native extensions.
 ## Contributors
 
  *  [Travis Thieman](https://github.com/tthieman) ([@tthieman](https://twitter.com/thieman))
+ *  [Sean Lewis](https://github.com/sophisticasean) ([@FricSean](https://twitter.com/fricsean))
