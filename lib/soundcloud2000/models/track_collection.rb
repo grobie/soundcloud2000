@@ -51,7 +51,13 @@ module Soundcloud2000
 
       def user_tracks
         return [] if @user.nil?
-        @client.get(@user.uri + '/tracks', offset: @limit * @page, limit: @limit)
+        user_tracks = @client.get(@user.uri + '/tracks', offset: @limit * @page, limit: @limit)
+        if user_tracks.empty?
+          UI::Input.input_line_out("'#{@client.current_user.username}' has not authored any tracks. Use f to switch to their favorites, or s to switch to their playlists.")
+          return []
+        else
+          return user_tracks
+        end
       end
 
       def playlist_tracks
