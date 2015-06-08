@@ -32,18 +32,30 @@ module Soundcloud2000
       params[:client_id] = client_id
       params[:format] = 'json'
 
+      req = if type == :post
+              _p = Net::HTTP::Post.new("#{path}?#{uri_escape params}")
+              _p.set_form_data(params)
+              _p
+            else
+              Net::HTTP::Get.new("#{path}?#{uri_escape params}")
+            end
+
       Net::HTTP.start('api.soundcloud.com', 443, :use_ssl => true) do |http|
-        http.request(type.new("#{path}?#{uri_escape params}"))
+        http.request(req)
       end
     end
 
     def get(path, params={})
-      JSON.parse(request(Net::HTTP::Get, path, params).body)
+      JSON.parse(request(:get, path, params).body)
+    end
+
+    def post(path, params={})
+      JSON.parse(request(:post, path, params).body)
     end
 
     def location(url)
       uri = URI.parse(url)
-      res = request(Net::HTTP::Get, uri.path)
+      res = request(:get, uri.path)
       if res.code == '302'
         res.header['Location']
       end

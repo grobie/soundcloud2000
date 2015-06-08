@@ -6,4 +6,10 @@ $LOAD_PATH.unshift(lib) if File.directory?(lib)
 
 require 'soundcloud2000'
 
-Soundcloud2000.start
+mode = ARGV.shift
+
+if mode == "--auth"
+  Soundcloud2000.authenticate(ARGV)
+else
+  Soundcloud2000.start
+end
