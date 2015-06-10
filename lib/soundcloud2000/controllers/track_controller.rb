@@ -25,29 +25,32 @@ module Soundcloud2000
             @view.down
             @tracks.load_more if @view.bottom?
           when :u
-            user = fetch_user_with_message('Change to SoundCloud user: ')
-            if user[:success]
-              @tracks.user = @client.current_user = user[:user]
+            user = fetch_user_with_message('Change to soundcloud user: ')
+            unless user.nil?
+              @client.current_user = user
               @tracks.collection_to_load = :user
               @tracks.clear_and_replace
-            else
-              UI::Input.error("No such user '#{user[:user]}'. Use u to try again.")
             end
           when :f
             @client.current_user = fetch_user_with_message('Change to SoundCloud user: ') if @client.current_user.nil?
-            @tracks.collection_to_load = :favorites
-            @tracks.clear_and_replace
+            unless @client.current_user.nil?
+              @tracks.collection_to_load = :favorites
+              @tracks.clear_and_replace
+            end
           when :s
             @view.clear
             @client.current_user = fetch_user_with_message('Change to SoundCloud user: ') if @client.current_user.nil?
-            set = UI::Input.getstr('Change to SoundCloud playlist: ')
-            set_request = @client.resolve(@client.current_user.permalink + '/sets/' + set)
-            unless set_request == nil
-              @tracks.playlist = Models::Playlist.new(set_request)
-              @tracks.collection_to_load = :playlist
-              @tracks.clear_and_replace
-            else
-              UI::Input.error("No such set/playlist '#{set}' for #{@client.current_user.username}")
+            unless @client.current_user.nil?
+              set = UI::Input.getstr('Change to SoundCloud playlist: ')
+              set_request = @client.resolve(@client.current_user.permalink + '/sets/' + set)
+              unless set_request == nil
+                @tracks.playlist = Models::Playlist.new(set_request)
+                @tracks.collection_to_load = :playlist
+                @tracks.clear_and_replace
+              else
+                UI::Input.error("No such set/playlist '#{set}' for #{@client.current_user.username}")
+                @client.current_user = nil
+              end
             end
           end
         end
@@ -57,11 +60,10 @@ module Soundcloud2000
         permalink = UI::Input.getstr(message_to_display)
         user_hash = @client.resolve(permalink)
         if user_hash
-          { success: true,
-            user: Models::User.new(user_hash) }
+            Models::User.new(user_hash)
         else
-          { success: false,
-            user: permalink }
+            UI::Input.error("No such user '#{permalink}'. Use u to try again.")
+            nil
         end
       end
 

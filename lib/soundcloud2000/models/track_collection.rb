@@ -41,8 +41,8 @@ module Soundcloud2000
       end
 
       def favorites_tracks
-        return [] if @user.nil?
-        @client.get(@user.uri + '/favorites', offset: @limit * @page, limit: @limit)
+        return [] if @client.current_user.nil?
+        @client.get(@client.current_user.uri + '/favorites', offset: @limit * @page, limit: @limit)
       end
 
       def recent_tracks
@@ -50,8 +50,8 @@ module Soundcloud2000
       end
 
       def user_tracks
-        return [] if @user.nil?
-        user_tracks = @client.get(@user.uri + '/tracks', offset: @limit * @page, limit: @limit)
+        return [] if @client.current_user.nil?
+        user_tracks = @client.get(@client.current_user.uri + '/tracks', offset: @limit * @page, limit: @limit)
         if user_tracks.empty?
           UI::Input.error("'#{@client.current_user.username}' has not authored any tracks. Use f to switch to their favorites, or s to switch to their playlists.")
           return []
