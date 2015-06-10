@@ -63,7 +63,7 @@ module Soundcloud2000
           location = @client.location(track.stream_url)
           @player.play(track, location)
         else
-          UI::Input.input_line_out("No track currently selected. Use f to switch to #{@client.current_user.username}'s favorites, or s to switch to their playlists/sets.")
+          UI::Input.error("No track currently selected. Use f to switch to #{@client.current_user.username}'s favorites, or s to switch to their playlists/sets.")
         end
       end
 

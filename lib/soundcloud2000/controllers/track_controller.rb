@@ -31,7 +31,7 @@ module Soundcloud2000
               @tracks.collection_to_load = :user
               @tracks.clear_and_replace
             else
-              UI::Input.input_line_out("No such user '#{user[:user]}'. Use u to try again.")
+              UI::Input.error("No such user '#{user[:user]}'. Use u to try again.")
             end
           when :f
             @client.current_user = fetch_user_with_message('Change to SoundCloud user: ') if @client.current_user.nil?
@@ -47,7 +47,7 @@ module Soundcloud2000
               @tracks.collection_to_load = :playlist
               @tracks.clear_and_replace
             else
-              UI::Input.input_line_out("No such set/playlist '#{set}' for #{@client.current_user.username}")
+              UI::Input.error("No such set/playlist '#{set}' for #{@client.current_user.username}")
             end
           end
         end

@@ -45,7 +45,7 @@ module Soundcloud2000
         result
       end
 
-      def self.input_line_out(output)
+      def self.error(output)
         Curses.setpos(Curses.lines - 1, 0)
         Curses.clrtoeol()
         Curses.attron(Color.get(:red)) { Curses.addstr(output) }
