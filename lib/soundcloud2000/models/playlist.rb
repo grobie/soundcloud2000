@@ -13,11 +13,11 @@ module Soundcloud2000
       def title
         @hash['title']
       end
-      
+
       def uri
         @hash['uri']
       end
-      
+
     end
   end
 end

@@ -2,6 +2,7 @@ require_relative '../events'
 
 module Soundcloud2000
   module Controllers
+    # Control our view, events, and rendering.
     class Controller
       attr_reader :events
 
@@ -13,7 +14,6 @@ module Soundcloud2000
       def render
         @view.render
       end
-
     end
   end
 end

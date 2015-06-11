@@ -4,8 +4,10 @@ require_relative '../views/player_view'
 
 module Soundcloud2000
   module Controllers
+    # The top section player controller
+    # Displays current track position
+    # Equalizer and track information
     class PlayerController < Controller
-
       def initialize(view, client)
         super(view)
 
@@ -59,14 +61,15 @@ module Soundcloud2000
       end
 
       def play(track)
-        unless track == nil
+        if track.nil?
+          UI::Input.error('No track currently selected. Use f to switch to '\
+                          "#{@client.current_user.username}'s favorites, or"\
+                          ' s to switch to their playlists/sets.')
+        else
           location = @client.location(track.stream_url)
           @player.play(track, location)
-        else
-          UI::Input.error("No track currently selected. Use f to switch to #{@client.current_user.username}'s favorites, or s to switch to their playlists/sets.")
         end
       end
-
     end
   end
 end

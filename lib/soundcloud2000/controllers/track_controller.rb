@@ -7,8 +7,8 @@ require_relative '../models/user'
 
 module Soundcloud2000
   module Controllers
+    # Handles the navigation thru the current track list
     class TrackController < Controller
-
       def initialize(view, client)
         super(view)
 
@@ -43,13 +43,13 @@ module Soundcloud2000
             unless @client.current_user.nil?
               set = UI::Input.getstr('Change to SoundCloud playlist: ')
               set_request = @client.resolve(@client.current_user.permalink + '/sets/' + set)
-              unless set_request == nil
+              if set_request.nil?
+                UI::Input.error("No such set/playlist '#{set}' for #{@client.current_user.username}")
+                @client.current_user = nil
+              else
                 @tracks.playlist = Models::Playlist.new(set_request)
                 @tracks.collection_to_load = :playlist
                 @tracks.clear_and_replace
-              else
-                UI::Input.error("No such set/playlist '#{set}' for #{@client.current_user.username}")
-                @client.current_user = nil
               end
             end
           end
@@ -60,10 +60,10 @@ module Soundcloud2000
         permalink = UI::Input.getstr(message_to_display)
         user_hash = @client.resolve(permalink)
         if user_hash
-            Models::User.new(user_hash)
+          Models::User.new(user_hash)
         else
-            UI::Input.error("No such user '#{permalink}'. Use u to try again.")
-            nil
+          UI::Input.error("No such user '#{permalink}'. Use u to try again.")
+          nil
         end
       end
 
@@ -85,7 +85,6 @@ module Soundcloud2000
         @view.select
         events.trigger(:select, current_track)
       end
-
     end
   end
 end
