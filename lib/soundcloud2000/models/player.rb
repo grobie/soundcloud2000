@@ -3,13 +3,14 @@ require_relative '../download_thread'
 
 module Soundcloud2000
   module Models
+    # responsible for drawing and updating the player above tracklist
     class Player
       attr_reader :track, :events
 
       def initialize
         @track = nil
         @events = Events.new
-        @folder = File.expand_path("~/.soundcloud2000")
+        @folder = File.expand_path('~/.soundcloud2000')
         @seek_speed = {}
         @seek_time = {}
         create_player
@@ -19,7 +20,7 @@ module Soundcloud2000
 
       def create_player
         @player = Audite.new
-        @player.events.on(:position_change) do |position|
+        @player.events.on(:position_change) do
           events.trigger(:progress)
         end
 
@@ -52,7 +53,7 @@ module Soundcloud2000
         mpg.length * mpg.tpf / mpg.spf
       end
 
-      def load(track, location, &block)
+      def load(track, location)
         @file = "#{@folder}/#{track.id}.mp3"
 
         if !File.exist?(@file) || track.duration / 1000 > length_in_seconds * 0.95
@@ -66,7 +67,7 @@ module Soundcloud2000
       end
 
       def log(*args)
-        Soundcloud2000::Application.logger.debug 'Player: ' + args.join(" ")
+        Soundcloud2000::Application.logger.debug 'Player: ' + args.join(' ')
       end
 
       def level
@@ -99,7 +100,8 @@ module Soundcloud2000
         @seek_time[direction] =  Time.now
         @seek_speed[direction]
       end
-      #change song position
+
+      # change song position
       def seek_position(position)
         position *= 0.1
         relative_position = position * duration
@@ -120,9 +122,8 @@ module Soundcloud2000
       def forward
         seconds = seek_speed(:forward)
 
-        if ((seconds + seconds_played) / duration) < download_progress
-          @player.forward(seconds)
-        end
+        seek_percentage = (seconds + seconds_played) / duration
+        @player.forward(seconds) if seek_percentage < download_progress
       end
 
       def stop

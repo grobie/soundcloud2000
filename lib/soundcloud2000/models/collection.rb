@@ -2,6 +2,7 @@ require_relative '../events'
 
 module Soundcloud2000
   module Models
+    # stores the tracks displayed in the track controller
     class Collection
       include Enumerable
       attr_reader :events, :rows, :page
