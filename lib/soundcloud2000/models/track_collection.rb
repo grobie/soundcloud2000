@@ -4,6 +4,8 @@ require_relative 'playlist'
 
 module Soundcloud2000
   module Models
+    # This model deals with the different types of tracklists that populate
+    # the tracklist section
     class TrackCollection < Collection
       DEFAULT_LIMIT = 50
 
@@ -33,9 +35,9 @@ module Soundcloud2000
 
       def load_more
         unless @loaded
-          tracks = self.send(@collection_to_load.to_s + "_tracks")
+          tracks = send(@collection_to_load.to_s + '_tracks')
           @loaded = true if tracks.empty?
-          append tracks.map {|hash| Track.new hash }
+          append tracks.map { |hash| Track.new hash }
           @page += 1
         end
       end
@@ -64,7 +66,6 @@ module Soundcloud2000
         return [] if @playlist.nil?
         @client.get(@playlist.uri + '/tracks', offset: @limit * @page, limit: @limit)
       end
-
     end
   end
 end
