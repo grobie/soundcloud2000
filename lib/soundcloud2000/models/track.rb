@@ -2,8 +2,8 @@ require_relative 'user'
 
 module Soundcloud2000
   module Models
+    # stores information for each track that hits the player
     class Track
-
       def initialize(hash)
         @hash = hash
       end
@@ -51,7 +51,6 @@ module Soundcloud2000
       def stream_url
         @hash['stream_url']
       end
-
     end
   end
 end

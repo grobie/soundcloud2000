@@ -1,7 +1,7 @@
 module Soundcloud2000
   module Models
+    # stores information on the current user we are looking at
     class User
-
       def initialize(hash)
         @hash = hash
       end
