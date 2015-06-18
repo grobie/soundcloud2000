@@ -22,7 +22,7 @@ module Soundcloud2000
           events.trigger(:complete)
         end
 
-        @view.player(@player)
+        @view.player = @player
 
         events.on(:key) do |key|
           if @player.playing?

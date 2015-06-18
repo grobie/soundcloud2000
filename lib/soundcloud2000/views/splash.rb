@@ -2,6 +2,7 @@ require_relative '../ui/view'
 
 module Soundcloud2000
   module Views
+    # is responsible for drawing the wonderful splash screen
     class Splash < UI::View
       CONTENT = %q{
                                          ohmmNNmmdyoo.
@@ -34,7 +35,7 @@ module Soundcloud2000
                          Music Hack Day Stockholm 2013
 }
 
-    protected
+      protected
 
       def left
         (rect.width - lines.map(&:length).max) / 2
@@ -63,7 +64,6 @@ module Soundcloud2000
         # show until any keypress
         @window.getch
       end
-
     end
   end
 end

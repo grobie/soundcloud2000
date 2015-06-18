@@ -5,15 +5,13 @@ module Soundcloud2000
   module Views
     # draws and manages the top section of sc2000, the player
     class PlayerView < UI::View
+      attr_accessor :player
+
       def initialize(*attrs)
         super
 
         @spectrum = true
         padding 2
-      end
-
-      def player(instance)
-        @player = instance
       end
 
       def toggle_spectrum
@@ -25,7 +23,7 @@ module Soundcloud2000
       def draw
         line progress + download_progress
         with_color(:green) do
-          line (duration + ' - ' + status).ljust(16) + @player.title
+          line((duration + ' - ' + status).ljust(16) + @player.title)
         end
         line track_info
         line '>' * (@player.level.to_f * body_width).ceil
