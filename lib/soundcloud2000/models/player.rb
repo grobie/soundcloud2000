@@ -79,11 +79,7 @@ module Soundcloud2000
       end
 
       def download_progress
-        if @download
-          @download.progress / @download.total.to_f
-        else
-          1
-        end
+        @download ? @download.progress / @download.total.to_f : 1
       end
 
       def playing?

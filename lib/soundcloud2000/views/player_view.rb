@@ -3,8 +3,8 @@ require_relative '../ui/view'
 
 module Soundcloud2000
   module Views
+    # draws and manages the top section of sc2000, the player
     class PlayerView < UI::View
-
       def initialize(*attrs)
         super
 
@@ -20,7 +20,7 @@ module Soundcloud2000
         @spectrum = !@spectrum
       end
 
-    protected
+      protected
 
       def draw
         line progress + download_progress
@@ -60,7 +60,6 @@ module Soundcloud2000
       def duration
         TimeHelper.duration(@player.seconds_played.to_i * 1000)
       end
-
     end
   end
 end
