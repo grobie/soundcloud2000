@@ -1,7 +1,7 @@
 module Soundcloud2000
   class Events
     def initialize
-      @handlers = Hash.new {|h,k| h[k] = [] }
+      @handlers = Hash.new { |h, k| h[k] = [] }
     end
 
     def on(event, &block)
