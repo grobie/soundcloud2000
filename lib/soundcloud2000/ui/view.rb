@@ -4,6 +4,7 @@ require_relative 'color'
 
 module Soundcloud2000
   module UI
+    # class responsible for helping keep our app tidy and populated
     class View
       ROW_SEPARATOR = ?|
       LINE_SEPARATOR = ?-
@@ -41,7 +42,7 @@ module Soundcloud2000
         @window.clear
       end
 
-    protected
+      protected
 
       def lines_left
         rect.height - @line - 1
@@ -65,9 +66,8 @@ module Soundcloud2000
       end
 
       def draw
-        raise NotImplementedError
+        fail NotImplementedError
       end
-
     end
   end
 end
