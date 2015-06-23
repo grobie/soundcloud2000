@@ -2,6 +2,7 @@ require_relative 'view'
 
 module Soundcloud2000
   module UI
+    # responsible for drawing our table of tracks
     class Table < View
       SEPARATOR = '  |  '
 
@@ -13,14 +14,15 @@ module Soundcloud2000
 
         @sizes = []
         @rows = []
-        @current, @top = 0, 0
+        @current = 0
+        @top = 0
         @selected = nil
 
         reset
       end
 
       def bind_to(collection)
-        raise ArgumentError if @collection
+        fail ArgumentError if @collection
 
         @collection = collection
         @collection.events.on(:append) { render }
@@ -65,17 +67,17 @@ module Soundcloud2000
         render
       end
 
-    protected
+      protected
 
       def rows(start = 0, size = collection.size)
         collection[start, size].map do |record|
-          keys.map {|key| record.send(key).to_s }
+          keys.map { |key| record.send(key).to_s }
         end
       end
 
       def rest_width(elements)
         rect.width - elements.size * SEPARATOR.size -
-          elements.inject(0) { |sum, size| sum += size }
+          elements.inject(0) { |_a, e| + e }
       end
 
       def perform_layout
@@ -125,7 +127,6 @@ module Soundcloud2000
 
         line content
       end
-
     end
   end
 end
