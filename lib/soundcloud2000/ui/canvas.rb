@@ -4,8 +4,8 @@ require_relative 'color'
 
 module Soundcloud2000
   module UI
+    # initializes our Curses canvas for drawing on
     class Canvas
-
       def initialize
         Curses.noecho # do not show typed keys
         Curses.stdscr.keypad(true) # enable arrow keys
@@ -16,7 +16,6 @@ module Soundcloud2000
       def close
         Curses.close_screen
       end
-
     end
   end
 end

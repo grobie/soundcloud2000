@@ -3,6 +3,7 @@ require_relative 'color'
 
 module Soundcloud2000
   module UI
+    # handles getting input from the user
     class Input
       MAPPING = {
         Curses::KEY_LEFT   => :left,
@@ -35,7 +36,7 @@ module Soundcloud2000
 
       def self.getstr(prompt)
         Curses.setpos(Curses.lines - 1, 0)
-        Curses.clrtoeol()
+        Curses.clrtoeol
         Curses.addstr(prompt)
         Curses.echo
         result = Curses.getstr
@@ -47,7 +48,7 @@ module Soundcloud2000
 
       def self.error(output)
         Curses.setpos(Curses.lines - 1, 0)
-        Curses.clrtoeol()
+        Curses.clrtoeol
         Curses.attron(Color.get(:red)) { Curses.addstr(output) }
       end
     end
