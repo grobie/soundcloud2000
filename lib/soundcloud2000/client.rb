@@ -2,6 +2,7 @@ require 'net/http'
 require 'json'
 
 module Soundcloud2000
+  # responsible for the very basic information of the app
   class Client
     DEFAULT_LIMIT = 50
 
@@ -19,35 +20,30 @@ module Soundcloud2000
 
     def resolve(permalink)
       res = get('/resolve', url: "http://soundcloud.com/#{permalink}")
-      if location = res['location']
-        get URI.parse(location).path
-      end
+      get URI.parse(location).path if location == res['location']
     end
 
     def uri_escape(params)
-      URI.escape(params.collect{|k,v| "#{k}=#{v}"}.join('&'))
+      URI.escape(params.collect { |k, v| "#{k}=#{v}" }.join('&'))
     end
 
-    def request(type, path, params={})
+    def request(type, path, params = {})
       params[:client_id] = client_id
       params[:format] = 'json'
 
-      Net::HTTP.start('api.soundcloud.com', 443, :use_ssl => true) do |http|
+      Net::HTTP.start('api.soundcloud.com', 443, use_ssl: true) do |http|
         http.request(type.new("#{path}?#{uri_escape params}"))
       end
     end
 
-    def get(path, params={})
+    def get(path, params = {})
       JSON.parse(request(Net::HTTP::Get, path, params).body)
     end
 
     def location(url)
       uri = URI.parse(url)
       res = request(Net::HTTP::Get, uri.path)
-      if res.code == '302'
-        res.header['Location']
-      end
+      res.header['Location'] if res.code == '302'
     end
-
   end
 end
