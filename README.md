@@ -31,7 +31,11 @@ library to compile the native extensions.
 
 ## Usage
 
-    soundcloud2000
+  In order to use soundcloud2000, you need to [acquire a client credential for your application](http://soundcloud.com/you/apps/new). soundcloud2000 expects a valid client id to be set in the SC_CLIENT_ID environment variable.
+
+  You can either set this up in your `.bashrc` or equivalent or you can specify it on the command line:
+
+    SC_CLIENT_ID=YOUR_CLIENT_ID soundcloud2000
 
 ## Features
 
