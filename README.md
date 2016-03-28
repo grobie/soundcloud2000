@@ -20,6 +20,7 @@ library to compile the native extensions.
 
 ### OSX
 
+    xcode-select --install
     brew install portaudio
     brew install mpg123
     gem install soundcloud2000
