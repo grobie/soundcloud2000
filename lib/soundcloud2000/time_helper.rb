@@ -17,7 +17,7 @@ module Soundcloud2000
 
       parts.shift if parts.first.zero?
 
-      [parts.first, *parts[1..-1].map { |part| "%02d#{part}" }].join('.')
+      [parts.first, *parts[1..-1].map { |part| format('%02d', part) }].join('.')
     end
   end
 end
