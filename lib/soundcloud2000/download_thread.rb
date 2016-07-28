@@ -1,4 +1,4 @@
-require 'net/http'
+require 'net/https'
 require_relative 'events'
 
 module Soundcloud2000
@@ -21,7 +21,11 @@ module Soundcloud2000
       Thread.start do
         begin
           log :start
-          Net::HTTP.get_response(url) do |res|
+
+          http = Net::HTTP.new(url.host, url.port)
+          http.use_ssl = true
+
+          http.request(Net::HTTP::Get.new(url.request_uri)) do |res|
             log "response: #{res.code}"
             raise res.body if res.code != '200'
 
