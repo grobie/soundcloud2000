@@ -32,7 +32,7 @@ module Soundcloud2000
               @tracks.clear_and_replace
             end
           when :f
-            @client.current_user = fetch_user_with_message('Change to SoundCloud user: ') if @client.current_user.nil?
+            @client.current_user = fetch_user_with_message('Change to SoundCloud user\'s favourites: ') if @client.current_user.nil?
             unless @client.current_user.nil?
               @tracks.collection_to_load = :favorites
               @tracks.clear_and_replace

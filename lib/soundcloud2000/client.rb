@@ -20,7 +20,9 @@ module Soundcloud2000
 
     def resolve(permalink)
       res = get('/resolve', url: "http://soundcloud.com/#{permalink}")
-      get URI.parse(location).path if location == res['location']
+      if res['location']
+        get URI.parse(res['location']).path
+      end
     end
 
     def uri_escape(params)
